@@ -1,0 +1,65 @@
+* = Needed for MVP
+
+Features
+* [] Move to own github repo
+* [] Top-Level FLOW DAO & Controller with NANOS Integration
+* [] Triangle and/or Polygon Shape
+  [] Make "Console" into an object?
+  [] Make "language" features into object or add to shell?
+  [] Add Sections to DetailView
+  [] Add Actions to DetailView
+  [] Add Methods to DetailView
+  [] Add Button Thing (extends Label?)
+  [] A Layout tool which works like physics to keep your diagrams pretty
+  [] Port simple Graph from FOAM1
+    https://raw.githubusercontent.com/foam-framework/foam/refs/heads/master/js/foam/graphics/Graph.js
+  [] Add Sections to Tools: ie. Shapes, Physics, Architecture, Containers, Sound, etc.
+  [] Sliding StackView
+  [] Individual Property View
+  [] Ability to 'link' values
+  [] touch support
+  [] mobile sizing
+  [] Add soft-select / hover for Properties TreeView
+  [] Delete key to delete object
+  [] Add Properties: Int, Float, String
+  help();
+  anchor points + lines
+  Jump to Sheet
+  Make custom Halos creatable in FLOW
+  Specify Musical Notes for Beep
+  Musical Instrument
+  Console / Terminal
+  Timeline / Sequence / Animation
+  Dashboard
+  Borders? (unnamed parents?)
+  MP3 / Audio
+  Document
+  Create Models from Canvases
+  Add created Models to Canvas
+  Port foam1 Eyes and Dragon to be FLOW Things
+  Pencil
+  Laser Pointer
+
+Input:
+  Keyboard Input
+  Slider
+  2D Slider
+  Dial
+  Mixer Panel
+
+Bugs:
+  [] Fix Calculator CSS
+
+FLOW Property Types like Distance, Angle, Colour, etc.
+Sliders for width and height
+
+MotionBlur
+Gauge
+https://github.com/foam-framework/foam/blob/master/js/foam/demos/graphics/EyesDemo.js
+
+https://github.com/foam-framework/foam/blob/master/js/foam/demos/graphics/Dragon.js
+
+https://github.com/foam-framework/foam/blob/2966cde661ccadbb8b1548fede78f6d67cc53ed5/js/foam/demos/SolarSystem.js#L20
+
+
+https://www.instructables.com/Quick-and-Dirty-Dynamic-DNS-Using-GoDaddy/
