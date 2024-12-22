@@ -16,6 +16,7 @@ foam.CLASS({
   properties: [
     {
       name: 'reactions_',
+      hidden: true,
       factory: function() { return {}; },
       postSet: function(_, rs) {
         for ( var key in rs ) {
