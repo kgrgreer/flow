@@ -43,12 +43,12 @@ To run flow, first clone the FOAM3 repository:
 
 Then start the NANOS server:
 
-    $ ./tools/build.js
+    $ ./build.sh
 
 Then point your web browser to:
 
-    [http://localhost:8080/src/com/google/flow/index.html](http://localhost:8080/src/com/google/flow/index.html)
-
+    http://localhost:8080/flow.html
+    
 # Source Code
 [https://github.com/kgrgreer/foam3/tree/development/src/com/google/flow](https://github.com/kgrgreer/flow/tree/main/src/com/google/flow)
 
