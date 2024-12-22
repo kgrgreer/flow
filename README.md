@@ -33,6 +33,9 @@ FLOW supports conventional Logo-like turtle graphics, but with a few extensions:
 1. Create an education environment, primarily aimed at children, for learning programming.
 2. Actually create a useful tool for creating diagrams, animations, simulations and simple database applications.
 
+# History
+FLOW was originally created as an experimental sub-project of the [FOAM2](https://github.com/foam-framework/foam2) framework at Google. This project forked from that original project, but is no longer associated with Google.
+
 # Installation
 To run flow, first clone the FOAM3 repository:
 
@@ -44,10 +47,10 @@ Then start the NANOS server:
 
 Then point your web browser to:
 
-    http://localhost:8080/src/com/google/flow/index.html
+    [http://localhost:8080/src/com/google/flow/index.html](http://localhost:8080/src/com/google/flow/index.html)
 
 # Source Code
-https://github.com/kgrgreer/foam3/tree/development/src/com/google/flow
+[https://github.com/kgrgreer/foam3/tree/development/src/com/google/flow](https://github.com/kgrgreer/flow/tree/main/src/com/google/flow)
 
 # Related
 [Potluck - Dynamic documents as personal software](https://www.inkandswitch.com/potluck/)
