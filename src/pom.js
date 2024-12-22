@@ -1,6 +1,6 @@
 foam.POM({
   name: 'flow',
   projects: [
-    { name: 'com/google/flow' }
+    { name: 'com/google/flow/pom' }
   ]
 });

@@ -1,11 +1,11 @@
 foam.POM({
   name: 'flow',
-  projects: [
-    { name: 'Calc' },
-    { name: 'FLOW' },
-    { name: 'Halo' },
-    { name: 'LineHalo' },
-    { name: 'ReactiveDetailView' },
-    { name: 'Things' }
+  files: [
+    { name: 'Calc', flags: 'js' },
+    { name: 'FLOW', flags: 'js' },
+    { name: 'Halo', flags: 'js' },
+    { name: 'LineHalo', flags: 'js' },
+    { name: 'ReactiveDetailView', flags: 'js' },
+    { name: 'Things', flags: 'js' }
   ]
 });
