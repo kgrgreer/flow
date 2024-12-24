@@ -22,10 +22,15 @@ foam.POM({
     u3: true
   },
 
+  webroot: [
+    'favicon'
+  ],
+
   projects: [
     { name: 'foam3/pom' },
     { name: 'src/pom' }
   ],
+
   files: [
     { name: 'src/com/google/misc/Colors', flags: 'js' },
     { name: 'foam3/src/foam/u2/tag/TextArea', flags: 'js' },
