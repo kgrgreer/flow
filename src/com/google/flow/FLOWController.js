@@ -38,6 +38,10 @@ foam.CLASS({
 //    'com.google.dxf.ui.DXFDiagram',
   ],
 
+  imports: [
+    'flowDAO?'
+  ],
+
   exports: [
     'addProperty',
     'as data',
@@ -268,7 +272,7 @@ foam.CLASS({
       class: 'foam.dao.DAOProperty',
       name: 'flows',
       factory: function() {
-        return this.EasyDAO.create({
+        return this.flowDAO || this.EasyDAO.create({
           of: com.google.flow.FLOW,
           cache: false,
           daoType: 'IDB'
