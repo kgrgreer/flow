@@ -46,6 +46,33 @@ foam.CLASS({
           y:           o.y
         }, o.__context__);
         m[this.name].instance_.reactions_ = o.reactions_;
+      },
+      postSet: function(o, n) {
+        if ( this.feedback_ ) return;
+        this.feedback_ = true;
+        try {
+          this.instance_.json_ = foam.json.Compact.stringify(n);
+          console.log('***********', this.instance_.json_);
+        } catch(x) {
+        } finally {
+          this.feedback = false;
+        }
+      }
+    },
+    {
+      class: 'String',
+      name: 'json_',
+      hidden: true,
+      postSet: function(o, n) {
+        if ( this.feedback_ ) return;
+        this.feedback_ = true;
+        try {
+          this.instance_.value = foam.json.parse(n, null, this.__context__);
+          // console.log(foam.json.parse(n, null, this.__context__));
+        } catch(x) {
+        } finally {
+          this.feedback = false;
+        }
       }
     }
   ],

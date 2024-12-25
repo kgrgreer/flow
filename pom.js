@@ -33,7 +33,6 @@ foam.POM({
 
   files: [
     { name: 'src/com/google/misc/Colors', flags: 'js' },
-    { name: 'foam3/src/foam/u2/tag/TextArea', flags: 'js' },
     { name: 'foam3/src/foam/audio/Beep', flags: 'js' },
     { name: 'foam3/src/foam/audio/Speak', flags: 'js' },
     { name: 'foam3/src/foam/input/Gamepad', flags: 'js' },

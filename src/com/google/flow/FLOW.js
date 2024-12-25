@@ -23,6 +23,20 @@ foam.CLASS({
       class: 'FObjectArray',
       of: 'com.google.flow.Property',
       name: 'memento'
+      /*
+      postSet: function(o, n) {
+        this.instance_.memento_ = foam.JSON.compact.stringify(n);
+        debugger;
+      }
+    },
+    {
+      class: 'String',
+      name: 'memento_',
+      hidden: true,
+      postSet: function(o, n) {
+        this.instance_.memento = foam.json.parse(n, null, this.__context__);
+        debugger;
+      }*/
     }
   ]
 });
