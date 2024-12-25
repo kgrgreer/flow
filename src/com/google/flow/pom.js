@@ -11,6 +11,7 @@ foam.POM({
     { name: 'Halo',                   flags: 'js' },
     { name: 'LineHalo',               flags: 'js' },
     { name: 'ReactiveDetailView',     flags: 'js' },
-    { name: 'Things',                 flags: 'js' }
+    { name: 'Things',                 flags: 'js' },
+    { name: 'ZAC',                    flags: 'js|java' }
   ]
 });

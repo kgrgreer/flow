@@ -39,6 +39,7 @@ foam.POM({
     { name: 'foam3/src/foam/input/Gamepad', flags: 'js' },
     { name: 'foam3/src/foam/demos/clock/Clock', flags: 'js' },
     { name: 'foam3/src/foam/demos/robot/Robot', flags: 'js' },
-    { name: 'foam3/src/foam/demos/sevenguis/Cells', flags: 'js' }
+    { name: 'foam3/src/foam/demos/sevenguis/Cells', flags: 'js' },
+    { name: 'foam3/src/foam/nanos/zac/Client', flags: 'js' }
   ]
 });

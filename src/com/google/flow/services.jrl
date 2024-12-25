@@ -1,0 +1,18 @@
+p({
+  "class":"foam.nanos.boot.NSpec",
+  "name":"flowDAO",
+  "description": "Stores FLOWs.",
+  "serve":true,
+  "authenticate":false,
+  "serviceScript":
+  """
+    return new foam.dao.EasyDAO.Builder(x)
+      .setPm(true)
+      .setAuthorize(false)
+      .setJournalType(foam.dao.JournalType.SINGLE_JOURNAL)
+      .setJournalName("flows")
+      .setOf(com.google.flow.FLOW.getOwnClassInfo())
+      .build();
+  """,
+  "client":"{\"of\":\"com.google.flow.FLOW\"}"
+})
