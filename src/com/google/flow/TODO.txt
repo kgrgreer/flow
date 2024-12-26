@@ -22,6 +22,7 @@ Features
   [] Delete key to delete object
   [] Add Properties: Int, Float, String
   help();
+  grid
   anchor points + lines
   Jump to Sheet
   Make custom Halos creatable in FLOW
