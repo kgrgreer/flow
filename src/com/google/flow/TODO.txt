@@ -1,7 +1,6 @@
 * = Needed for MVP
 
 Features
-* [] Move to own github repo
 * [] Top-Level FLOW DAO & Controller with NANOS Integration
 * [] Triangle and/or Polygon Shape
   [] Make "Console" into an object?
