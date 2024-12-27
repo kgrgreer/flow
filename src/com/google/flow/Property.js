@@ -18,6 +18,7 @@ foam.CLASS({
     {
       name: 'value',
       cloneProperty: function(o, m) {
+        if ( ! o || ! o.cls_ ) return;
         m[this.name] = o.cls_.create({
           arcWidth:    o.arcWidth,
           border:      o.border,
@@ -67,7 +68,7 @@ foam.CLASS({
         if ( this.feedback_ ) return;
         this.feedback_ = true;
         try {
-          this.instance_.value = foam.json.parse(n, null, this.__context__);
+          this.instance_.value = foam.json.parseString(n, this.__context__);
           // console.log(foam.json.parse(n, null, this.__context__));
         } catch(x) {
         } finally {
@@ -96,5 +97,7 @@ foam.RELATIONSHIP({
   cadinality: '1:*',
   sourceModel: 'com.google.flow.Property',
   targetModel: 'com.google.flow.Property',
-  targetDAOKey: 'properties'
+  targetDAOKey: 'properties',
+  sourceProperty: { hidden: true },
+  targetProperty: { hidden: true },
 });
