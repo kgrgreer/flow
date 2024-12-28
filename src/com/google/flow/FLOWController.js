@@ -574,11 +574,13 @@ foam.CLASS({
       foam.assert(name, 'Name required.')
 
       this.name = name;
-      this.flows.inX(this.__subContext__).find(name).then(f => {
+      this.flows.find(name).then(f => {
         // TODO: needed to work around two bugs:
         //  1. the flowDAO doesn't create the objects in the supplied context
         //  2. clone(X) doesn't seem to clone the memento.value object
-        this.memento = f.memento.map(i => { i.value = i.value.clone(this.__subContext__); return i; }); // foam.Array.clone(f.memento, this.__subContext__);
+        f = f.clone(this.__subContext__);
+        f.memento_ = f.memento_; // causes f.memento to be regenerated
+        this.memento = f.memento;
       });
       return 'loading: ' + name;
     },
