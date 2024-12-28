@@ -20,8 +20,11 @@ foam.CLASS({
       shortName: 'r_',
       factory: function() { return {}; },
       postSet: function(_, rs) {
-        for ( var key in rs ) {
-          this.startReaction_(key, rs[key]);
+        // Only start reactions if in the proper context
+        if ( this.__context__.scope ) {
+          for ( var key in rs ) {
+            this.startReaction_(key, rs[key]);
+          }
         }
         return rs;
       },
@@ -29,7 +32,8 @@ foam.CLASS({
         var m = {};
         for ( key in v ) { m[key] = v[key].toString(); }
         return m;
-      }
+      },
+      initObject: function() { this.reactions_ = this.reactions_; }
     }
   ],
 
