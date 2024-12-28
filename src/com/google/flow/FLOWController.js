@@ -35,7 +35,7 @@ foam.CLASS({
     'foam.u2.PopupView',
     'foam.u2.TableView',
     'foam.util.Timer'
-//    'com.google.dxf.ui.DXFDiagram',
+    //    'com.google.dxf.ui.DXFDiagram', // TODO: move code to flow repository
   ],
 
   imports: [
@@ -44,7 +44,7 @@ foam.CLASS({
 
   exports: [
     'addProperty',
-    'as data',
+    'as data', // Why not extend Controller instead?
     'dblclick',
     'depth_',
     'physics',
@@ -574,8 +574,11 @@ foam.CLASS({
       foam.assert(name, 'Name required.')
 
       this.name = name;
-      this.flows.find(name).then(f => {
-        this.memento = f.memento;
+      this.flows.inX(this.__subContext__).find(name).then(f => {
+        // TODO: needed to work around two bugs:
+        //  1. the flowDAO doesn't create the objects in the supplied context
+        //  2. clone(X) doesn't seem to clone the memento.value object
+        this.memento = f.memento.map(i => { i.value = i.value.clone(this.__subContext__); return i; }); // foam.Array.clone(f.memento, this.__subContext__);
       });
       return 'loading: ' + name;
     },
