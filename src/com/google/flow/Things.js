@@ -252,12 +252,13 @@ foam.CLASS({
   requires: [ 'foam.graphics.Box' ],
 
   properties: [
-    [ 'mass', foam.physics.Physical.INFINITE_MASS ],
-    [ 'border', null ],
-    [ 'color',  'red' ],
-    [ 'start',  Math.PI ],
-    [ 'radius', 20 ],
-    { name: 'stem', hidden: true/*, view: 'foam.u2.DetailView'*/ }
+    { name: 'mass',   value: foam.physics.Physical.INFINITE_MASS, transient: true },
+    { name: 'border', value: null,    transient: true },
+    { name: 'color',  value: 'red',   transient: true },
+    { name: 'start',  value: Math.PI, transient: true },
+    { name: 'radius', value: 20,      transient: true },
+    { name: 'stem',   hidden: true,   transient: true /*, view: 'foam.u2.DetailView'*/ },
+    { name: 'children', transient: true },
   ],
 
   methods: [
@@ -674,7 +675,7 @@ foam.CLASS({
       class: 'String',
       name: 'delegate',
       postSet: function(o, n) {
-        if ( n ) {
+        if ( n && this.scope ) {
           var obj = this.scope[n];
           if ( obj ) {
             if ( obj.radius ) {
@@ -685,7 +686,8 @@ foam.CLASS({
             }
           }
         }
-      }
+      },
+      initObject: function() { this.delegate = this.delegate; }
     },
     {
       class: 'Int',
