@@ -270,14 +270,19 @@ foam.CLASS({
     },
     {
       class: 'foam.dao.DAOProperty',
-      name: 'flows',
+      name: 'localFLOWDAO',
       factory: function() {
-        return this.flowDAO || this.EasyDAO.create({
+        return this.EasyDAO.create({
           of: com.google.flow.FLOW,
           cache: false,
           daoType: 'IDB'
         });
       }
+    },
+    {
+      class: 'foam.dao.DAOProperty',
+      name: 'flows',
+      factory: function() { return this.flowDAO || this.localFLOWDAO; }
     },
     {
       name: 'value',
@@ -569,9 +574,9 @@ foam.CLASS({
       foam.assert(name, 'Name required.')
 
       this.name = name;
-      this.flows.find(name).then(function (f) {
+      this.flows.find(name).then(f => {
         this.memento = f.memento;
-      }.bind(this));
+      });
       return 'loading: ' + name;
     },
 
