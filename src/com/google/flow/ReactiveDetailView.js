@@ -32,8 +32,7 @@ foam.CLASS({
         var m = {};
         for ( key in v ) { m[key] = v[key].toString(); }
         return m;
-      },
-      initObject: function() { this.reactions_ = this.reactions_; }
+      }
     }
   ],
 
