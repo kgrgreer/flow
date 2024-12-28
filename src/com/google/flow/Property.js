@@ -17,20 +17,29 @@ foam.CLASS({
     },
     {
       name: 'value',
+      /*
+      fromJSON: function(json, x) {
+        return foam.json.parse(json, null, x);
+      },
+      */
       cloneProperty: function(o, m) {
         if ( ! o || ! o.cls_ ) return;
+        // TODO: This is very error prone if you forget to add new properties here.
+        // Why is this done?
         m[this.name] = o.cls_.create({
           arcWidth:    o.arcWidth,
           border:      o.border,
           code:        o.code,
           color:       o.color,
           compressionStrength: o.compressionStrength,
+          delegate:    o.delegate,
           end:         o.end,
           friction:    o.friction,
           gravity:     o.gravity,
           head:        o.head,
           height:      o.height,
           length:      o.length,
+          lineDash:    o.lineDash,
           mass:        o.mass,
           name:        o.name,
           radius:      o.radius,
@@ -47,34 +56,12 @@ foam.CLASS({
           y:           o.y
         }, o.__context__);
         m[this.name].instance_.reactions_ = o.reactions_;
-      },
-      xxxpostSet: function(o, n) {
-        if ( this.feedback_ ) return;
-        this.feedback_ = true;
-        try {
-          this.instance_.json_ = foam.json.Short.stringify(n);
-          console.log('***********', this.instance_.json_);
-        } catch(x) {
-        } finally {
-          this.feedback = false;
-        }
       }
     },
     {
       class: 'String',
       name: 'json_',
-      hidden: true,
-      xxxpostSet: function(o, n) {
-        if ( this.feedback_ ) return;
-        this.feedback_ = true;
-        try {
-          this.instance_.value = foam.json.parseString(n, this.__context__);
-          // console.log(foam.json.parse(n, null, this.__context__));
-        } catch(x) {
-        } finally {
-          this.feedback = false;
-        }
-      }
+      hidden: true
     }
   ],
 
