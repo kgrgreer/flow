@@ -22,21 +22,40 @@ foam.CLASS({
     {
       class: 'FObjectArray',
       of: 'com.google.flow.Property',
-      name: 'memento'
-      /*
+      name: 'memento',
+      hidden: true,
+      transient: true,
       postSet: function(o, n) {
-        this.instance_.memento_ = foam.JSON.compact.stringify(n);
-        debugger;
+        if ( this.feedback_ ) return;
+        this.feedback_ = true;
+        try {
+          // TODO: should still not output empty reactions_: or children:
+          var json = foam.json.Outputter.create({
+            pretty: false,
+            strict: false,
+            formatDatesAsNumbers: true,
+            outputDefaultValues: false,
+            useShortNames: true
+          });
+//          this.memento_ = foam.json.Short.stringify(n);
+          this.memento_ = json.stringify(n);
+        } finally {
+          this.feedback_ = false;
+        }
       }
     },
     {
       class: 'String',
       name: 'memento_',
-      hidden: true,
       postSet: function(o, n) {
-        this.instance_.memento = foam.json.parse(n, null, this.__context__);
-        debugger;
-      }*/
+        if ( this.feedback_ ) return;
+        this.feedback_ = true;
+        try {
+        this.memento = foam.json.parseString(n, this.__context__);
+        } finally {
+          this.feedback_ = false;
+        }
+      }
     }
   ]
 });
