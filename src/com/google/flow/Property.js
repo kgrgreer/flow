@@ -48,11 +48,11 @@ foam.CLASS({
         }, o.__context__);
         m[this.name].instance_.reactions_ = o.reactions_;
       },
-      postSet: function(o, n) {
+      xxxpostSet: function(o, n) {
         if ( this.feedback_ ) return;
         this.feedback_ = true;
         try {
-          this.instance_.json_ = foam.json.Compact.stringify(n);
+          this.instance_.json_ = foam.json.Short.stringify(n);
           console.log('***********', this.instance_.json_);
         } catch(x) {
         } finally {
@@ -64,7 +64,7 @@ foam.CLASS({
       class: 'String',
       name: 'json_',
       hidden: true,
-      postSet: function(o, n) {
+      xxxpostSet: function(o, n) {
         if ( this.feedback_ ) return;
         this.feedback_ = true;
         try {
@@ -98,6 +98,6 @@ foam.RELATIONSHIP({
   sourceModel: 'com.google.flow.Property',
   targetModel: 'com.google.flow.Property',
   targetDAOKey: 'properties',
-  sourceProperty: { hidden: true },
-  targetProperty: { hidden: true },
+  sourceProperty: { hidden: true, shortName: 'c' },
+  targetProperty: { hidden: true, shortName: 'p' }
 });
