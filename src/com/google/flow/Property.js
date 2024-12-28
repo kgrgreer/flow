@@ -27,6 +27,7 @@ foam.CLASS({
         // TODO: This is very error prone if you forget to add new properties here.
         // Why is this done?
         m[this.name] = o.cls_.create({
+          alpha:       o.alpha,
           arcWidth:    o.arcWidth,
           border:      o.border,
           code:        o.code,
