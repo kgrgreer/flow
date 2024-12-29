@@ -27,6 +27,7 @@ foam.CLASS({
     'com.google.flow.Property',
     'foam.dao.EasyDAO',
     'foam.demos.sevenguis.Cells',
+    'foam.flow.Document',
     'foam.google.flow.TreeView',
     'foam.graphics.Box',
     'foam.graphics.CView',
@@ -340,6 +341,10 @@ foam.CLASS({
         this.physics.setPrivate_('lpp_', p);
         dao.put(p);
 
+        p = this.Property.create({name: 'doc1', value: this.doc});
+        this.physics.setPrivate_('lpp_', p);
+        dao.put(p);
+
         p = this.Property.create({name: 'timer', value: this.timer, parent: 'canvas1'});
         this.physics.setPrivate_('lpp_', p);
         dao.put(p);
@@ -380,6 +385,12 @@ foam.CLASS({
         this.Calc.getAxiomsByClass(foam.core.Property).forEach(function(p) { p.hidden = true; });
 
         return this.Calc.create().style({width:'650px'});
+      }
+    },
+    {
+      name: 'doc',
+      factory: function() {
+        return this.Document.create();
       }
     },
     'mouseTarget',
@@ -494,6 +505,10 @@ foam.CLASS({
               end().
               start(foam.u2.Tab, {label: 'sheet1'}).
                 start(this.sheet).
+                end().
+              end().
+              start(foam.u2.Tab, {label: 'doc1'}).
+                start(this.doc).
                 end().
               end().
               start(foam.u2.Tab, {label: 'calc1'}).
