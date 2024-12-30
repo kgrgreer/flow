@@ -1488,6 +1488,31 @@ foam.CLASS({
   ]
 });
 
+foam.CLASS({
+  package: "com.google.flow",
+  name: 'Button',
+  extends: 'foam.graphics.CView',
+  imports: [
+    'data',
+    'scope'
+  ],
+  properties: [
+    {
+      class: 'String',
+      name: "script"
+    },
+    {
+      class: 'Boolean',
+      name: 'enabled',
+      value: false
+    }
+  ],
+  listeners: [
+    function onClick(e) {
+      this.scope[this.script].run();
+    }
+  ]
+})
 
 // foam.json.stringify(flow.memento.map(function(o) { var v = o.value; var r = {name: o.name, factory: 'function() { return ' + v.cls_.id + '.create(' + foam.json.stringify(v.instance_) + ')}'};  return r;})).replace(/\"/g,"'").replace(/\\/g,'');
 
