@@ -179,19 +179,12 @@ foam.CLASS({
           load: this.loadFlow.bind(this),
           save: this.saveFlow.bind(this),
           dir: function() {
-            // TODO: Better to allow commands to return promises and have
-            // the cmdLinewait for them to finish
             var log = this.log;
-            var first = true;
-            self.flows.select({
+            return self.flows.select({
               put: function(o) {
-                if ( first ) {
-                  first = false;
-                  log('\n');
-                }
                 log(o.name);
               }
-            }).then(function() { if ( ! first ) log('\nflow> '); });
+            }).then(function() { return undefined; });
           }
         };
         scope.scope = scope;
@@ -403,7 +396,7 @@ foam.CLASS({
       class: 'String',
       name: 'cmdLine',
       value: 'flow> ',
-      postSet: function(_, cmd) {
+      postSet: async function(_, cmd) {
         if ( this.cmdLineFeedback_ ) return;
         this.cmdLineFeedback_ = true;
 
@@ -416,7 +409,11 @@ foam.CLASS({
 
           with ( this.scope ) {
             log();
-            log(eval(cmd));
+            var r = eval(cmd);
+            if ( r instanceof Promise ) {
+              r = await r;
+            }
+            log(r);
           }
         } catch (x) {
           this.scope.log('ERROR:', x);
