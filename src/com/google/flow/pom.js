@@ -5,6 +5,7 @@ foam.POM({
     { name: "Canvas",                 flags: "js" },
     { name: "Select",                 flags: "js" },
     { name: "TreeView",               flags: "js" },
+    { name: "Console",                flags: "js" },
     { name: "Property",               flags: "js|java" },
     { name: "FLOW",                   flags: "js|java" },
     { name: "FLOWController",         flags: "js" },

@@ -21,6 +21,7 @@ Features
   [] Add soft-select / hover for Properties TreeView
   [] Delete key to delete object
   [] Add Properties: Int, Float, String
+  [] console support for embedded Views
   help();
   grid
   anchor points + lines

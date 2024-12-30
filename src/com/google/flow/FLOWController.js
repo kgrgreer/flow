@@ -17,6 +17,7 @@ foam.CLASS({
   requires: [
     'com.google.flow.Calc',
     'com.google.flow.Canvas',
+    'com.google.flow.Console',
     'com.google.flow.Circle',
     'com.google.flow.DetailPropertyView',
     'com.google.flow.Ellipse',
@@ -327,7 +328,7 @@ foam.CLASS({
 
         // TODO: these shouldn't be hard-coded here
         p = this.Property.create({name: 'canvas1', value: this.canvas});
-        this.physics.setPrivate_('lpp_', p);
+        this.physics.setPrivate_('lpp_', p); // TODO: document why this is needed
         dao.put(p);
 
         p = this.Property.create({name: 'sheet1', value: this.sheet});
@@ -335,6 +336,10 @@ foam.CLASS({
         dao.put(p);
 
         p = this.Property.create({name: 'doc1', value: this.doc});
+        this.physics.setPrivate_('lpp_', p);
+        dao.put(p);
+
+        p = this.Property.create({name: 'console1', value: this.console});
         this.physics.setPrivate_('lpp_', p);
         dao.put(p);
 
@@ -384,6 +389,12 @@ foam.CLASS({
       name: 'doc',
       factory: function() {
         return this.Document.create();
+      }
+    },
+    {
+      name: 'console',
+      factory: function() {
+        return this.Console.create();
       }
     },
     'mouseTarget',
@@ -503,6 +514,11 @@ foam.CLASS({
               start(foam.u2.Tab, {label: 'sheet1'}).
                 start(this.sheet).
                 end().
+             end().
+             start(foam.u2.Tab, {label: 'console1'}).
+        add(this.console).
+//                start(this.console).
+//                end().
               end().
               start(foam.u2.Tab, {label: 'doc1'}).
                 start(this.doc).
@@ -574,7 +590,7 @@ foam.CLASS({
     },
 
     function updateMemento() {
-      return this.properties.skip(4).select().then(function(s) {
+      return this.properties.skip(6).select().then(function(s) {
         console.log('*************** updateMemento: ', s.array.length);
         this.feedback_ = true;
         this.memento = foam.Array.clone(s.array);
@@ -719,7 +735,7 @@ foam.CLASS({
       mergeDelay: 100,
       code: function() {
         var m = this.memento;
-        this.properties.skip(4).removeAll();
+        this.properties.skip(6).removeAll();
         if ( m ) {
           for ( var i = 0 ; i < m.length ; i++ ) {
             var p = m[i];
