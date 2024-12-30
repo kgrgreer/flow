@@ -25,6 +25,7 @@ foam.CLASS({
     'com.google.flow.CircleHalo',
     'com.google.flow.Halo',
     'com.google.flow.LineHalo',
+    'com.google.flow.Button',
     'com.google.flow.Property',
     'foam.dao.EasyDAO',
     'foam.demos.sevenguis.Cells',
@@ -252,6 +253,7 @@ foam.CLASS({
         dao.put(com.google.flow.Proxy.model_);
         dao.put(com.google.flow.Reflector.model_);
         dao.put(com.google.flow.Revolver.model_);
+        dao.put(com.google.flow.Button.model_);
         dao.put(foam.input.Gamepad.model_);
         dao.put(foam.core.Model.model_);
         // dao.put(com.google.dxf.ui.DXFDiagram.model_);
@@ -702,6 +704,16 @@ foam.CLASS({
 
       if ( this.Halo.isInstance(c)     ) return;
       if ( this.LineHalo.isInstance(c) ) return;
+
+      // TODO: Make this generic somehow
+      let parent = c.parent;
+      while (parent) {
+        if ( this.Button.isInstance(parent) && parent.enabled ) {
+          parent.onClick(evt);
+          return;
+        }
+        parent = parent.parent;
+      }
 
       if ( c === this.canvas ) {
         var tool = this.currentTool;
