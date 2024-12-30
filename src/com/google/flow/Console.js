@@ -14,9 +14,11 @@ foam.CLASS({
   css: `
     ^ {
       box-shadow: 3px 3px 3px 0 gray;
+      overflow-y: auto;
       width: 100%;
-      height: 70%;
-//      margin-bottom: 8px;
+      height: 75%;
+      margin-bottom: 4px;
+      max-height: 600px;
     }
    ^output {
      font-family: monospace;
@@ -25,6 +27,7 @@ foam.CLASS({
    ^input {
      padding-right: 20px;
      display: block;
+     margin-bottom: 12px;
    }
   `,
 
@@ -70,6 +73,7 @@ foam.CLASS({
     function log(...args) {
       this.output.tag('br');
       this.output.add(args.join(' '));
+      this.element_.scrollTop = this.element_.scrollHeight;
     },
 
     function cls() {
