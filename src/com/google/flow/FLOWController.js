@@ -50,6 +50,7 @@ foam.CLASS({
     'as data', // Why not extend Controller instead?
     'dblclick',
     'depth_',
+    'flows',
     'physics',
     'properties',
     'scope',
@@ -179,15 +180,7 @@ foam.CLASS({
           degToRad: function(d) { return d * Math.PI / 180; },
           radToDeg: function(r) { return r * 180 / Math.PI; },
           load: this.loadFlow.bind(this),
-          save: this.saveFlow.bind(this),
-          dir: function() {
-            var log = this.log;
-            return self.flows.select({
-              put: function(o) {
-                log(o.name);
-              }
-            }).then(function() { return undefined; });
-          }
+          save: this.saveFlow.bind(this)
         };
         scope.scope = scope;
         return scope;

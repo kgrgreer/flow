@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'Console',
   extends: 'foam.u2.Controller',
 
-  imports: [ 'scope' ],
+  imports: [ 'flows', 'scope' ],
 
   css: `
     ^ {
@@ -18,7 +18,8 @@ foam.CLASS({
       width: 100%;
       height: 75%;
       margin-bottom: 4px;
-      max-height: 600px;
+      width: 800px;
+      max-height: 800px;
     }
     ^output {
       font-family: monospace;
@@ -41,7 +42,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'input',
-      width: 80
+      width: 105
 //      view: { class: 'foam.u2.tag.TextArea', rows: 2, cols: 80 }
     },
     {
@@ -57,6 +58,7 @@ foam.CLASS({
         return {
           history: this.history.bind(this),
           log:     this.log.bind(this),
+          dir:     this.dir.bind(this),
           this:    this,
           cls:     this.cls.bind(this),
           output:  this.output
@@ -101,6 +103,12 @@ foam.CLASS({
           'text-decoration': 'underline'
         }).on('click', () => this.eval_(h)).add(h).end();
       });
+    },
+
+    function dir() {
+      return this.flows.select({
+        put: o => this.log(o.name)
+      }).then(function() { return undefined; });
     },
 
     async function eval_(cmd) {
