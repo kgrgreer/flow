@@ -18,6 +18,7 @@ foam.CLASS({
       width: 100%;
       height: 75%;
       margin-bottom: 4px;
+      padding-left: 6px;
       width: 800px;
       max-height: 800px;
     }
@@ -97,17 +98,26 @@ foam.CLASS({
 
     function history() {
       this.history_.forEach(h => {
-        this.output.tag('br').start('a').style({
-          color: '-webkit-link',
-          cursor: 'pointer',
-          'text-decoration': 'underline'
-        }).on('click', () => this.eval_(h)).add(h).end();
+        this.output.tag('br');
+        this.outputLink(h, () => this.eval_(h));
       });
+    },
+
+    function outputLink(text, action) {
+      this.output.start('a').style({
+        color: '-webkit-link',
+        cursor: 'pointer',
+        'text-decoration': 'underline'
+      }).on('click', action).add(text).end();
+      return this;
     },
 
     function dir() {
       return this.flows.select({
-        put: o => this.log(o.name)
+        put: o => {
+          this.output.tag('br');
+          this.outputLink(o.name, () => this.scope.load(o.name));
+        }
       }).then(function() { return undefined; });
     },
 
