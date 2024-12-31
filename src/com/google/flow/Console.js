@@ -20,21 +20,28 @@ foam.CLASS({
       margin-bottom: 4px;
       max-height: 600px;
     }
-   ^output {
-     font-family: monospace;
-     text-align: left;
-   }
-   ^input {
-     padding-right: 20px;
-     display: block;
-     margin-bottom: 12px;
-   }
+    ^output {
+      font-family: monospace;
+      text-align: left;
+    }
+    ^input {
+      padding-right: 20px;
+      display: block;
+      margin-bottom: 12px;
+    }
+    ^input input {
+      border: none;
+    }
+    ^input input:focus-visible {
+      border: none;
+    }
   `,
 
   properties: [
     {
       class: 'String',
-      name: 'input'
+      name: 'input',
+      width: 80
 //      view: { class: 'foam.u2.tag.TextArea', rows: 2, cols: 80 }
     },
     {
@@ -63,14 +70,20 @@ foam.CLASS({
     function render() {
       this.SUPER();
 
-      this.addClass(this.myClass()).
-      start('div', null, this.output$).addClass(this.myClass('output')).end().
-      tag('br').
-      start(this.INPUT).addClass(this.myClass('input')).end().
-      input$.sub(this.onInput);
+      this.
+        addClass(this.myClass()).
+        start('div', null, this.output$).addClass(this.myClass('output')).end().
+        start('span').
+          style({display: 'inline-flex', float: 'left'}).
+          start('b').style({'margin-top': '6px', 'margin-right': '4px'}).add('> ').end().
+          start(this.INPUT).focus().addClass(this.myClass('input')).end().
+        end();
+
+      this.input$.sub(this.onInput);
     },
 
     function log(...args) {
+      if ( args.length == 0 ) return;
       this.output.tag('br');
       this.output.add(args.join(' '));
       this.element_.scrollTop = this.element_.scrollHeight;
