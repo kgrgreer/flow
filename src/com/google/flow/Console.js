@@ -18,7 +18,7 @@ foam.CLASS({
       width: 100%;
       height: 75%;
       margin-bottom: 4px;
-      padding-left: 6px;
+      padding-left: 8px;
       width: 800px;
       max-height: 800px;
     }
@@ -31,11 +31,8 @@ foam.CLASS({
       display: block;
       margin-bottom: 12px;
     }
-    ^input input {
-      border: none;
-    }
-    ^input input:focus-visible {
-      border: none;
+    ^ .property-input {
+      border: none !important;
     }
   `,
 
@@ -43,9 +40,11 @@ foam.CLASS({
     {
       class: 'String',
       name: 'input',
+      view: 'foam.u2.TextField', // Avoids ModeAltView focus() issue
       width: 105
 //      view: { class: 'foam.u2.tag.TextArea', rows: 2, cols: 80 }
     },
+    'input_',
     {
       name: 'output'
     },
@@ -79,8 +78,9 @@ foam.CLASS({
         start('span').
           style({display: 'inline-flex', float: 'left'}).
           start('b').style({'margin-top': '6px', 'margin-right': '4px'}).add('> ').end().
-          start(this.INPUT).focus().addClass(this.myClass('input')).end().
-        end();
+          start(this.INPUT, null, this.input_$).focus().addClass(this.myClass('input')).end().
+        end().
+        on('click', () => { console.log('click'); this.input_.focus(); });
 
       this.input$.sub(this.onInput);
     },
