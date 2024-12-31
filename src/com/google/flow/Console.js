@@ -104,8 +104,10 @@ foam.CLASS({
       });
     },
 
-    function outputLink(text, action) {
-      this.output.start('a').style({
+    // TODO: Just make be a View class
+    function outputLink(text, action, self) {
+      self = self || this.output;
+      self.start('a').style({
         color: '-webkit-link',
         cursor: 'pointer',
         'text-decoration': 'underline'
@@ -123,18 +125,27 @@ foam.CLASS({
     },
 
     function help() {
+      var self = this;
       var out = this.output;
       out.tag('br');
       var cmds = [
         [ 'help',    'Display help' ],
-        [ 'dir',     'Display saved flows' ],
-        [ 'cls',     'Clear console output' ],
-        [ 'history', 'Display past executed commands' ],
+        [ 'dir',     'Display saved flows', true ],
+        [ 'cls',     'Clear console output', true ],
+        [ 'history', 'Display past executed commands', true ],
         [ 'load',    'Load a specified flow' ],
         [ 'save',    'Save the current flow to a specified name' ]
       ];
       out.start('table').attr('width', '100%').forEach(cmds, function(c) {
-        this.start('tr').start('th').attr('align', 'left').add(c[0]).end().start('td').attr('align', 'left').add(c[1]);
+        this.start('tr').
+          start('th').attr('align', 'left').call(function() {
+            if ( c[2] ) {
+              self.outputLink(c[0], () => self.eval_(c[0]), this);
+            } else {
+              this.add(c[0]);
+            }
+          }).end().
+          start('td').attr('align', 'left').add(c[1]);
       });
     },
 
