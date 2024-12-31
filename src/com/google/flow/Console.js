@@ -13,7 +13,7 @@ foam.CLASS({
 
   css: `
     ^ {
-      box-shadow: 3px 3px 3px 0 gray;
+      box-shadow: 3px 3px 6px 0 gray;
       overflow-y: auto;
       width: 100%;
       height: 75%;
