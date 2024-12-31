@@ -59,6 +59,7 @@ foam.CLASS({
           history: this.history.bind(this),
           log:     this.log.bind(this),
           dir:     this.dir.bind(this),
+          help:    this.help.bind(this),
           this:    this,
           cls:     this.cls.bind(this),
           output:  this.output
@@ -93,7 +94,7 @@ foam.CLASS({
     },
 
     function cls() {
-      this.output$.removeAllChildren();
+      this.output.removeAllChildren();
     },
 
     function history() {
@@ -119,6 +120,22 @@ foam.CLASS({
           this.outputLink(o.name, () => this.scope.load(o.name));
         }
       }).then(function() { return undefined; });
+    },
+
+    function help() {
+      var out = this.output;
+      out.tag('br');
+      var cmds = [
+        [ 'help',    'Display help' ],
+        [ 'dir',     'Display saved flows' ],
+        [ 'cls',     'Clear console output' ],
+        [ 'history', 'Display past executed commands' ],
+        [ 'load',    'Load a specified flow' ],
+        [ 'save',    'Save the current flow to a specified name' ]
+      ];
+      out.start('table').attr('width', '100%').forEach(cmds, function(c) {
+        this.start('tr').start('th').attr('align', 'left').add(c[0]).end().start('td').attr('align', 'left').add(c[1]);
+      });
     },
 
     async function eval_(cmd) {
