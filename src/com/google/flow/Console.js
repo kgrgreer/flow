@@ -62,6 +62,7 @@ foam.CLASS({
           help:     this.help.bind(this),
           this:     this,
           cls:      this.cls.bind(this),
+          daos:     this.services.bind(this, foam.mlang.Expressions.create().ENDS_WITH(foam.nanos.boot.NSpec.NAME, 'DAO')),
           services: this.services.bind(this),
           output:   this.output
         };
@@ -82,7 +83,7 @@ foam.CLASS({
           start('b').style({'margin-top': '6px', 'margin-right': '4px'}).add('> ').end().
           start(this.INPUT, null, this.input_$).focus().addClass(this.myClass('input')).end().
         end().
-        on('click', () => { console.log('click'); this.input_.focus(); });
+        on('click', () => this.input_.focus());
 
       this.input$.sub(this.onInput);
     },
@@ -132,6 +133,7 @@ foam.CLASS({
         [ 'help',     'Display help' ],
         [ 'flows',    'Display saved flows', true ],
         [ 'cls',      'Clear console output', true ],
+        [ 'daos',     'Display availabe DAO services', true ],
         [ 'history',  'Display past executed commands', true ],
         [ 'load',     'Load a specified flow' ],
         [ 'services', 'Display available services', true ],
@@ -151,11 +153,11 @@ foam.CLASS({
         });
     },
 
-    async function services() {
+    async function services(opt_query) {
       var self = this;
       this.output.tag('br');
       this.output.start('table').attr('width', '100%').
-        select(this.nSpecDAO, function(n) {
+        select(opt_query ? this.nSpecDAO.where(opt_query) : this.nSpecDAO, function(n) {
           this.start('tr').
             start('th').attr('align', 'left').call(function() {
               this.add(n.name);
