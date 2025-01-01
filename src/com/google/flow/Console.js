@@ -77,17 +77,19 @@ foam.CLASS({
     function render() {
       this.SUPER();
 
+      var self = this;
+
       this.
         addClass(this.myClass()).
         start('div', null, this.output$).addClass(this.myClass('output')).end().
         start('span').
           style({display: 'inline-flex', float: 'left'}).
-          start('b').style({'margin-top': '6px', 'margin-right': '4px'}).add('> ').end().
+        start('b').style({'margin-top': '6px', 'margin-right': '4px', display: 'flex', 'white-space': 'pre'}).call(function() { self.outputLink('help', () => self.eval_('help'), this); }).add(' >').end().
           start(this.INPUT, null, this.input_$).focus().addClass(this.myClass('input')).end().
         end().
         on('click', () => this.input_.focus());
 
-      this.input$.sub(this.onInput);
+       this.input$.sub(this.onInput);
     },
 
     function log(...args) {
@@ -168,16 +170,12 @@ foam.CLASS({
         });;
     },
 
-    function prompt(self) {
-      return this.start('b').add('> ').end();
-    },
-
     async function eval_(cmd) {
       var self = this;
       cmd = cmd.trim();
       if ( ! cmd ) return;
-      if ( cmd != 'history' && cmd != 'history()' ) this.history_.push(cmd);
-      this.output.tag('br').call(self.prompt.bind(self)).add(cmd);
+      if ( cmd != 'history' && cmd != 'history()' && cmd != 'help' ) this.history_.push(cmd);
+      this.output.tag('br').start('b').add('> ').end().add(cmd);
 
       with ( this.scope ) {
         with ( this.localScope ) {
