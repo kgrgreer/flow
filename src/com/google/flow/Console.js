@@ -16,7 +16,7 @@ foam.CLASS({
       box-shadow: 3px 3px 6px 0 gray;
       overflow-y: auto;
       width: 100%;
-      height: 75%;
+      height: 90%;
       margin-bottom: 4px;
       padding-left: 8px;
       width: 800px;
