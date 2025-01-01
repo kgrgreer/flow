@@ -86,7 +86,6 @@ foam.CLASS({
       // ^ canvas { border: none; width: 800px; height: 700px; }
       ^ canvas { margin-left: 12px; border: 1px solid; border-color: /*$grey400*/ #B2B6BD; box-shadow: 3px 3px 6px 0 gray; }
       ^ .foam-u2-ActionView { margin: 10px; }
-      ^cmd { box-shadow: 3px 3px 6px 0 gray; width: 100%; margin-bottom: 8px; }
       ^properties { margin-right: 8px; height: auto; }
       ^properties .foam-u2-view-TreeViewRow { position: relative; width: 220px; }
       ^properties .foam-u2-view-TreeViewRow-heading { min-height: 30px; }
@@ -167,12 +166,6 @@ foam.CLASS({
           })(),
           hsla: function(h, s, l, a) {
             return 'hsla(' + (h%360) + ',' + s + '%,' + l + '%,' + a + ')';
-          },
-          log: function() {
-            var o = this.cmdLineFeedback_;
-            if ( ! o ) self.cmdLineFeedback_ = true;
-            self.cmdLine += Array.from(arguments).join(' ') + '\n';
-            if ( ! o ) self.cmdLineFeedback_ = false;
           },
           sin: Math.sin,
           cos: Math.cos,
@@ -399,39 +392,6 @@ foam.CLASS({
       name: 'position',
       view: { class: 'foam.u2.RangeView', onKey: true }
     },
-    'cmdLineFeedback_',
-    {
-      class: 'String',
-      name: 'cmdLine',
-      value: 'flow> ',
-      postSet: async function(_, cmd) {
-        if ( this.cmdLineFeedback_ ) return;
-        this.cmdLineFeedback_ = true;
-
-        try {
-          var self = this;
-          var i = cmd.lastIndexOf('flow> ');
-          cmd = i === -1 ? cmd : cmd.substring(i+6);
-
-          if ( ! cmd.trim() ) return;
-
-          with ( this.scope ) {
-            log();
-            var r = eval(cmd);
-            if ( r instanceof Promise ) {
-              r = await r;
-            }
-            log(r);
-          }
-        } catch (x) {
-          this.scope.log('ERROR:', x);
-        } finally {
-          this.cmdLineFeedback_ = false;
-        }
-        this.cmdLine += 'flow> ';
-      },
-      view: { class: 'foam.u2.tag.TextArea', rows: 8, cols: 80 }
-    },
     {
       // Make Simple so that when it updates it doesn't cause a redraw
 //      class: 'Simple',
@@ -470,21 +430,7 @@ foam.CLASS({
 
       this.
           addClass(this.myClass()).
-          start('center').
-            start(this.CMD_LINE).
-              addClass(this.myClass('cmd')).
-              // TODO: this should be a feature of TextArea
-              on('keydown', function(evt) {
-                if ( evt.keyCode === 13 ) {
-                  self.cmdLine = evt.srcElement.value;
-                  evt.preventDefault();
-                  evt.srcElement.focus();
-                  evt.srcElement.scrollTop = evt.srcElement.scrollHeight;
-                  return false;
-                }
-              }).
-            end().
-//            tag('br').
+        start('center').
             start(foam.u2.Tabs).
             /*
               start(foam.u2.Tab, {label: 'FLOWs'}).
