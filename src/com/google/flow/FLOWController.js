@@ -389,7 +389,9 @@ foam.CLASS({
     {
       name: 'console',
       factory: function() {
-        return this.Console.create();
+        var c = this.Console.create();
+        setTimeout(() => c.eval_('help'), 100);
+        return c;
       }
     },
     'mouseTarget',
@@ -507,21 +509,16 @@ foam.CLASS({
                 end().
               end().
               start(foam.u2.Tab, {label: 'sheet1'}).
-                start(this.sheet).
-                end().
-             end().
-             start(foam.u2.Tab, {label: 'console1'}).
-        add(this.console).
-//                start(this.console).
-//                end().
+                add(this.sheet).
+              end().
+              start(foam.u2.Tab, {label: 'console1'}).
+                add(this.console).
               end().
               start(foam.u2.Tab, {label: 'doc1'}).
-                start(this.doc).
-                end().
+                add(this.doc).
               end().
               start(foam.u2.Tab, {label: 'calc1'}).
-                start(this.calc).
-                end().
+                add(this.calc).
               end().
               start(foam.u2.Tab, {label: '+'}).
               end().

@@ -22,7 +22,7 @@ Features
   [] Delete key to delete object
   [] Add Properties: Int, Float, String
   [] console support for embedded Views
-  help();
+  Should saved flows include their current tab or memento?
   grid
   anchor points + lines
   Jump to Sheet

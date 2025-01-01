@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'Console',
   extends: 'foam.u2.Controller',
 
-  imports: [ 'flows', 'scope' ],
+  imports: [ 'flows', 'nSpecDAO', 'scope' ],
 
   css: `
     ^ {
@@ -56,13 +56,14 @@ foam.CLASS({
       name: 'localScope',
       factory: function() {
         return {
-          history: this.history.bind(this),
-          log:     this.log.bind(this),
-          dir:     this.dir.bind(this),
-          help:    this.help.bind(this),
-          this:    this,
-          cls:     this.cls.bind(this),
-          output:  this.output
+          history:  this.history.bind(this),
+          log:      this.log.bind(this),
+          flows:    this.listFlows.bind(this),
+          help:     this.help.bind(this),
+          this:     this,
+          cls:      this.cls.bind(this),
+          services: this.services.bind(this),
+          output:   this.output
         };
       }
     }
@@ -115,7 +116,7 @@ foam.CLASS({
       return this;
     },
 
-    function dir() {
+    function listFlows() {
       return this.flows.select({
         put: o => {
           this.output.tag('br');
@@ -126,27 +127,41 @@ foam.CLASS({
 
     function help() {
       var self = this;
-      var out = this.output;
-      out.tag('br');
+      this.output.tag('br');
       var cmds = [
-        [ 'help',    'Display help' ],
-        [ 'dir',     'Display saved flows', true ],
-        [ 'cls',     'Clear console output', true ],
-        [ 'history', 'Display past executed commands', true ],
-        [ 'load',    'Load a specified flow' ],
-        [ 'save',    'Save the current flow to a specified name' ]
+        [ 'help',     'Display help' ],
+        [ 'flows',    'Display saved flows', true ],
+        [ 'cls',      'Clear console output', true ],
+        [ 'history',  'Display past executed commands', true ],
+        [ 'load',     'Load a specified flow' ],
+        [ 'services', 'Display available services', true ],
+        [ 'save',     'Save the current flow to a specified name' ]
       ];
-      out.start('table').attr('width', '100%').forEach(cmds, function(c) {
-        this.start('tr').
-          start('th').attr('align', 'left').call(function() {
-            if ( c[2] ) {
-              self.outputLink(c[0], () => self.eval_(c[0]), this);
-            } else {
-              this.add(c[0]);
-            }
-          }).end().
-          start('td').attr('align', 'left').add(c[1]);
-      });
+      this.output.start('table').attr('width', '100%').
+        forEach(cmds, function(c) {
+          this.start('tr').
+            start('th').attr('align', 'left').call(function() {
+              if ( c[2] ) {
+                self.outputLink(c[0], () => self.eval_(c[0]), this);
+              } else {
+                this.add(c[0]);
+              }
+            }).end().
+            start('td').attr('align', 'left').add(c[1]);
+        });
+    },
+
+    async function services() {
+      var self = this;
+      this.output.tag('br');
+      this.output.start('table').attr('width', '100%').
+        select(this.nSpecDAO, function(n) {
+          this.start('tr').
+            start('th').attr('align', 'left').call(function() {
+              this.add(n.name);
+            }).end().
+            start('td').attr('align', 'left').add(n.description);
+        });;
     },
 
     async function eval_(cmd) {
