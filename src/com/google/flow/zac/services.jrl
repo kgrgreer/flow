@@ -1,0 +1,26 @@
+p({
+  "class": "foam.nanos.boot.NSpec",
+  "name": "zacClient",
+  "authenticate": false,
+  "lazyClient": true,
+  "serve": true,
+  "client":"""{"class":"com.google.flow.ZAC"}"""
+})
+
+p({
+  "class": "foam.nanos.boot.NSpec",
+  "name": "consoleZACClient",
+  "authenticate": false,
+  "lazyClient": true,
+  "serve": true,
+  "client":"""{"class":"com.google.flow.ConsoleZACClient"}"""
+})
+
+p({
+  "class": "foam.nanos.boot.NSpec",
+  "name": "scope",
+  "authenticate": false,
+  "lazyClient": true,
+  "serve": true,
+  "client":"""{"class":"com.google.flow.zac.Scope"}"""
+})

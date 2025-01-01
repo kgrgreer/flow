@@ -6,12 +6,3 @@ p({
     "welcomeFiles":["/zac.html"]
   }
 })
-
-p({
-  "class": "foam.nanos.boot.NSpec",
-  "name": "zacClient",
-  "authenticate": false,
-  "lazyClient": false,
-  "serve": true,
-  "client":"""{"class":"com.google.flow.ZAC"}"""
-})

@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'Console',
   extends: 'foam.u2.Controller',
 
-  imports: [ 'flows', 'nSpecDAO', 'scope' ],
+  imports: [ 'flowDAO', 'nSpecDAO', 'scope' ],
 
   css: `
     ^ {
@@ -122,7 +122,7 @@ foam.CLASS({
     },
 
     function listFlows() {
-      return this.flows.select({
+      return this.flowDAO.select({
         put: o => {
           this.output.tag('br');
           this.outputLink(o.name, () => this.scope.load(o.name));
