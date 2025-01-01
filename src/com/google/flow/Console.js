@@ -55,6 +55,8 @@ foam.CLASS({
     {
       name: 'localScope',
       factory: function() {
+        // TODO: include DAOs in scope
+        // TODO: include MLang's from foam.mlang.Expressions in scope
         return {
           history:  this.history.bind(this),
           log:      this.log.bind(this),
@@ -166,12 +168,16 @@ foam.CLASS({
         });;
     },
 
+    function prompt(self) {
+      return this.start('b').add('> ').end();
+    },
+
     async function eval_(cmd) {
+      var self = this;
       cmd = cmd.trim();
       if ( ! cmd ) return;
-      if ( cmd != 'history' && cmd != 'history()' )
-        this.history_.push(cmd);
-      this.output.tag('br').start('b').add('> ').end().add(cmd);
+      if ( cmd != 'history' && cmd != 'history()' ) this.history_.push(cmd);
+      this.output.tag('br').call(self.prompt.bind(self)).add(cmd);
 
       with ( this.scope ) {
         with ( this.localScope ) {
