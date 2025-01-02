@@ -90,7 +90,7 @@ foam.CLASS({
         start('b').style({'margin-top': '6px', 'margin-right': '4px', display: 'flex', 'white-space': 'pre'}).call(function() { self.outputLink('help', () => self.eval_('help'), this); }).add(' >').end().
           start(this.INPUT, null, this.input_$).focus().addClass(this.myClass('input')).end().
         end().
-        on('click', () => this.input_.focus());
+        on('click', this.onClick);
 
        this.input$.sub(this.onInput);
     },
@@ -210,6 +210,15 @@ foam.CLASS({
       var input = this.input;
       this.input = '';
       this.eval_(input);
+    },
+    {
+      name: 'onClick',
+      // TODO: introduce a merge delay so that cut&paste still works
+      // but a better solution might be to wait for a keypress then set the focus
+      // and copy the key
+      isMerged: true,
+      mergeDelay: 600,
+      code: function() { this.input_.focus(); }
     }
   ]
 });
