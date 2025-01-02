@@ -68,10 +68,7 @@ foam.CLASS({
       name: 'run',
       code: function() {
         this.content.removeAllChildren();
-        this.__context__[this.daoKey].select(o => {
-          this.add(o);
-        });
-        this.add('run' + new Date());
+        this.__context__[this.daoKey].select(o => this.add(o));
       }
     }
   ]

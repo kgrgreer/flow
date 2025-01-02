@@ -107,6 +107,7 @@ foam.CLASS({
     },
 
     function cls() {
+      // TODO: add optional parameter to control number of commands to clear?
       this.output.removeAllChildren();
     },
 
