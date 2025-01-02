@@ -90,7 +90,7 @@ foam.CLASS({
         start('b').style({'margin-top': '6px', 'margin-right': '4px', display: 'flex', 'white-space': 'pre'}).call(function() { self.outputLink('help', () => self.eval_('help'), this); }).add(' >').end().
           start(this.INPUT, null, this.input_$).focus().addClass(this.myClass('input')).end().
         end().
-        on('click', this.onClick);
+        /* on('click', this.onClick) causes issues with embedded views that need focus */;
 
        this.input$.sub(this.onInput);
     },
