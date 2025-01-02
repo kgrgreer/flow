@@ -42,6 +42,7 @@ foam.CLASS({
   ],
 
   imports: [
+    'scope',
     'flowDAO?'
   ],
 
@@ -318,7 +319,6 @@ foam.CLASS({
       name: 'console',
       factory: function() {
         var c = this.Console.create();
-        setTimeout(() => c.eval_('help'), 100);
         return c;
       }
     },

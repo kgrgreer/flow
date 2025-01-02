@@ -183,6 +183,8 @@ foam.CLASS({
         });;
     },
 
+    // TODO: better to add newlines after
+
     async function eval_(cmd) {
       var self = this;
       cmd = cmd.trim();
