@@ -9,6 +9,10 @@ foam.CLASS({
   name: 'DAOPrompt',
   extends: 'foam.u2.Controller',
 
+  implements: [
+    'foam.mlang.Expressions'
+  ],
+
   requires: [
     'foam.u2.DetailView'
   ],
@@ -43,7 +47,8 @@ foam.CLASS({
     {
       name: 'select'
     },
-    'content'
+    'content',
+    'count'
   ],
 
 
@@ -58,8 +63,10 @@ foam.CLASS({
         add('limit(', this.LIMIT, ').').br().
         add('where(', this.WHERE, ').').br().
         add('select(', this.SELECT, ')').
-      end().add(this.RUN).
-      start('div', {}, this.content$).end();
+      end().
+      add(this.RUN, ' ', this.CLEAR).br().
+      start('span').show(this.count$.map(c=>c !== undefined)).add(this.count$, ' selected').end().br().
+      start('div', {}, this.content$).end().br();
     }
   ],
 
@@ -67,9 +74,17 @@ foam.CLASS({
     {
       name: 'run',
       code: function() {
-        this.content.removeAllChildren();
-        this.__context__[this.daoKey].select(o => this.add(o));
+        this.clear();
+        this.count = 0;
+        var dao = this.__context__[this.daoKey];
+        if ( this.query ) dao = dao.where(this.MQL(this.query));
+        if ( this.limit ) dao = dao.limit(this.limit);
+        if ( this.skip  ) dao = dao.skip(this.skip);
+        dao.select(o => { this.count++; this.add(o); });
       }
+    },
+    function clear() {
+      this.content.removeAllChildren();
     }
   ]
 });
