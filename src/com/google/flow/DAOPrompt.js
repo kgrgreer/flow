@@ -77,7 +77,7 @@ foam.CLASS({
         this.clear();
         this.count = 0;
         var dao = this.__context__[this.daoKey];
-        if ( this.query ) dao = dao.where(this.MQL(this.query));
+        if ( this.where ) dao = dao.where(this.MQL(this.where));
         if ( this.limit ) dao = dao.limit(this.limit);
         if ( this.skip  ) dao = dao.skip(this.skip);
         dao.select(o => { this.count++; this.add(o); });
