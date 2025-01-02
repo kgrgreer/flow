@@ -9,6 +9,8 @@ foam.CLASS({
   name: 'Console',
   extends: 'foam.u2.Controller',
 
+  requires: [ 'com.google.flow.DAOPrompt' ],
+
   imports: [ 'flowDAO', 'nSpecDAO', 'scope' ],
 
   css: `
@@ -62,6 +64,7 @@ foam.CLASS({
           log:      this.log.bind(this),
           flows:    this.listFlows.bind(this),
           help:     this.help.bind(this),
+          dao:      this.dao.bind(this),
           this:     this,
           cls:      this.cls.bind(this),
           daos:     this.services.bind(this, foam.mlang.Expressions.create().ENDS_WITH(foam.nanos.boot.NSpec.NAME, 'DAO')),
@@ -97,6 +100,10 @@ foam.CLASS({
       this.output.tag('br');
       this.output.add(args.join(' '));
       this.element_.scrollTop = this.element_.scrollHeight;
+    },
+
+    function dao(daoKey) {
+      this.output.tag(this.DAOPrompt.create({daoKey: daoKey}));
     },
 
     function cls() {
@@ -137,6 +144,7 @@ foam.CLASS({
         [ 'help',     'Display help' ],
         [ 'flows',    'Display saved flows', true ],
         [ 'cls',      'Clear console output', true ],
+        [ 'dao',      'Perform DAO operation' ], // ???: Combine with daos with args?
         [ 'daos',     'Display availabe DAO services', true ],
         [ 'history',  'Display past executed commands', true ],
         [ 'load',     'Load a specified flow' ],
@@ -164,7 +172,11 @@ foam.CLASS({
         select(opt_query ? this.nSpecDAO.where(opt_query) : this.nSpecDAO, function(n) {
           this.start('tr').
             start('th').attr('align', 'left').call(function() {
-              this.add(n.name);
+              if ( n.name.endsWith('DAO') ) {
+                self.outputLink(n.name, () => self.eval_('dao("' + n.name + '")'), this);
+              } else {
+                this.add(n.name);
+              }
             }).end().
             start('td').attr('align', 'left').add(n.description);
         });;
