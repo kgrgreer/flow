@@ -20,6 +20,7 @@ foam.CLASS({
   css: `
     ^ .foam-u2-TextInputCSS {
       width: auto;
+      height: 22px;
     }
   `,
 
@@ -63,8 +64,8 @@ foam.CLASS({
 
       this.addClass();
 
-      this.add(this.daoKey$).start('blockquote').style({'margin-top': '0'}).
-        add('.skip(',   this.SKIP,  ').').br().
+      this.add(this.daoKey$, '.').start('blockquote').style({'margin-top': '0'}).
+        add('skip(',   this.SKIP,  ').').br().
         add('limit(',   this.LIMIT, ').').br().
         add('where(',   this.WHERE, ').').br().
         add('orderBy(', this.ORDER, ').').br().
@@ -90,6 +91,11 @@ foam.CLASS({
         if ( this.where ) dao = dao.where(this.MQL(this.where));
         if ( this.limit ) dao = dao.limit(this.limit);
         if ( this.skip  ) dao = dao.skip(this.skip);
+        if ( this.order ) {
+          var props = this.order.trim().split(',').map(n => dao.of.getAxiomByName(n));
+          console.log('*****', props);
+          if ( props.length ) dao = dao.orderBy(props[0]);
+        }
         dao.select(o => { this.count++; this.add(o); });
       }
     },
