@@ -14,6 +14,7 @@ foam.CLASS({
   ],
 
   requires: [
+    'foam.parse.QueryParser',
     'foam.u2.DetailView'
   ],
 
@@ -65,7 +66,7 @@ foam.CLASS({
       this.addClass();
 
       this.add(this.daoKey$, '.').start('blockquote').style({'margin-top': '0'}).
-        add('skip(',   this.SKIP,  ').').br().
+        add('skip(',    this.SKIP,  ').').br().
         add('limit(',   this.LIMIT, ').').br().
         add('where(',   this.WHERE, ').').br().
         add('orderBy(', this.ORDER, ').').br().
@@ -92,9 +93,28 @@ foam.CLASS({
         if ( this.limit ) dao = dao.limit(this.limit);
         if ( this.skip  ) dao = dao.skip(this.skip);
         if ( this.order ) {
-          var props = this.order.trim().split(',').map(n => dao.of.getAxiomByName(n));
-          console.log('*****', props);
-          if ( props.length ) dao = dao.orderBy(props[0]);
+          // TODO: Move this logic somewhere more reusable
+          // QueryParser already knows how to find properties using either the name, shortName, or alias, case-insensitive
+          // So just reuse it.
+          var parser = this.QueryParser.create({of: dao.of});
+          var c = null; // created compartor
+          var s = '';   // created string
+
+          this.order.trim().split(',').reverse().forEach(n => {
+            n = n.trim();
+            var desc = n.startsWith('-');
+            if ( desc ) n = n.substring(1);
+            var prop = parser.parseString(n, 'fieldname');
+            if ( prop ) {
+              if ( s ) s = ',' + s;
+              s = prop.name + s;
+              if ( desc ) s = '-' + s;
+              if ( desc ) prop = this.DESC(prop);
+              c = c ? this.THEN_BY(prop, c) : prop;
+            }
+          });
+          this.order = s;
+          if ( c ) dao = dao.orderBy(c);
         }
         dao.select(o => { this.count++; this.add(o); });
       }
