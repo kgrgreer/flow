@@ -45,6 +45,11 @@ foam.CLASS({
       displayWidth: 80
     },
     {
+      class: 'String',
+      name: 'order',
+      displayWidth: 78
+    },
+    {
       name: 'select'
     },
     'content',
@@ -59,13 +64,18 @@ foam.CLASS({
       this.addClass();
 
       this.add(this.daoKey$).start('blockquote').style({'margin-top': '0'}).
-        add('.skip(', this.SKIP,  ').').br().
-        add('limit(', this.LIMIT, ').').br().
-        add('where(', this.WHERE, ').').br().
-        add('select(', this.SELECT, ')').
+        add('.skip(',   this.SKIP,  ').').br().
+        add('limit(',   this.LIMIT, ').').br().
+        add('where(',   this.WHERE, ').').br().
+        add('orderBy(', this.ORDER, ').').br().
+        add('select(',  this.SELECT, ')').
       end().
       add(this.RUN, ' ', this.CLEAR).br().
-      start('span').show(this.count$.map(c=>c !== undefined)).add(this.count$, ' selected').end().br().
+      start().
+        style({'padding-top': '10px'}).
+        show(this.count$.map(c=>c !== undefined)).
+        add(this.count$, ' selected').
+      end().br().
       start('div', {}, this.content$).end().br();
     }
   ],
