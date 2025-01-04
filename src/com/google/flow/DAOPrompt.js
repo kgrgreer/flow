@@ -56,6 +56,32 @@ foam.CLASS({
       // TODO: add support for Detail, Table, Citation, CSV, XML, JSON, Group By, Grid By, Count, Projection, ...
       name: 'select'
     },
+    {
+      name: 'whereChoice',
+      view: { class: 'foam.u2.view.ChoiceView', choices: [
+        'MQL',
+        'MLang',
+        'FScript'
+      ] }
+    },
+    {
+      name: 'selectChoice',
+      view: { class: 'foam.u2.view.ChoiceView', choices: [
+        'VIEW',
+        'EDIT',
+        'CITATION',
+        'TABLE', // foam.u2.mlang.Table.create();
+        'CSV',
+        'JSON',
+        'XML',
+        'COUNT',
+        'GROUP_BY',
+        'GRID_BY',
+        'PIE',
+        'SEQUENCE',
+        'TEMPLATE'
+      ] }
+    },
     'content',
     'count'
   ],
@@ -68,12 +94,14 @@ foam.CLASS({
 
       this.addClass();
 
-      this.add(this.daoKey$, '.').start('blockquote').style({'margin-top': '0'}).
+      this.
+      add(this.daoKey$, '.').
+      start('blockquote').style({'margin-top': '0'}).
         add('skip(',    this.SKIP,  ').').br().
         add('limit(',   this.LIMIT, ').').br().
-        add('where(',   this.WHERE, ').').br().
+        add('where(').start(this.WHERE_CHOICE).style({'display': 'inline-flex'}).end().add(' ', this.WHERE, ').').br().
         add('orderBy(', this.ORDER, ').').br().
-        add('select(',  this.SELECT, ')').
+        add('select(').start(this.SELECT_CHOICE).style({'display': 'inline-flex'}).end().add(' ',  this.SELECT, ')').
       end().
       add(this.RUN, ' ', this.CLEAR).br().
       start().
