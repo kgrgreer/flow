@@ -44,6 +44,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'where',
+      // TODO: support canned queries
       displayWidth: 80
     },
     {
@@ -52,12 +53,14 @@ foam.CLASS({
       displayWidth: 78
     },
     {
+      // TODO: add support for Detail, Table, Citation, CSV, XML, JSON, Group By, Grid By, Count, Projection, ...
       name: 'select'
     },
     'content',
     'count'
   ],
 
+  // TODO: add describe/help support?
 
   methods: [
     function render() {
@@ -93,7 +96,7 @@ foam.CLASS({
         if ( this.limit ) dao = dao.limit(this.limit);
         if ( this.skip  ) dao = dao.skip(this.skip);
         if ( this.order ) {
-          // TODO: Move this logic somewhere more reusable
+          // TODO: Move this logic somewhere more reusable (to QueryParser maybe?)
           // QueryParser already knows how to find properties using either the name, shortName, or alias, case-insensitive
           // So just reuse it.
           var parser = this.QueryParser.create({of: dao.of});
@@ -116,7 +119,8 @@ foam.CLASS({
           this.order = s;
           if ( c ) dao = dao.orderBy(c);
         }
-        dao.select(o => { this.count++; this.add(o); });
+//        dao.select(o => { this.count++; this.add(o); });
+        dao.select(o => { this.count++; setTimeout(() => this.add(o), 1); });
       }
     },
     function clear() {

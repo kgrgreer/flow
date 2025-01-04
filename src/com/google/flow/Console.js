@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'Console',
   extends: 'foam.u2.Controller',
 
-  requires: [ 'com.google.flow.DAOPrompt' ],
+  requires: [ 'com.google.flow.DAOPrompt', 'foam.flow.Document', 'com.google.flow.DocumentReadWriteView' ],
 
   imports: [ 'flowDAO', 'nSpecDAO', 'scope' ],
 
@@ -51,6 +51,11 @@ foam.CLASS({
       name: 'output'
     },
     {
+      class: 'Boolean',
+      name: 'showPrompts',
+      value: true
+    },
+    {
       class: 'StringArray',
       name: 'history_'
     },
@@ -60,6 +65,13 @@ foam.CLASS({
         // TODO: include DAOs in scope
         // TODO: include MLang's from foam.mlang.Expressions in scope
         return {
+          '#':      this.h1.bind(this),
+          '##':     this.h2.bind(this),
+          '###':    this.h3.bind(this),
+          '**':     this.bold.bind(this),
+          '*':      this.italic.bind(this),
+          '>':      this.blockquote.bind(this),
+          doc:      this.doc.bind(this),
           history:  this.history.bind(this),
           log:      this.log.bind(this),
           flows:    this.listFlows.bind(this),
@@ -100,6 +112,17 @@ foam.CLASS({
       this.output.tag('br');
       this.output.add(args.join(' '));
       this.element_.scrollTop = this.element_.scrollHeight;
+    },
+
+    function h1(h) { this.output.start('h1').add(h).end(); },
+    function h2(h) { this.output.start('h2').add(h).end(); },
+    function h3(h) { this.output.start('h3').add(h).end(); },
+    function bold(h) { this.output.start('b').add(h).end(); },
+    function italic(h) { this.output.start('i').add(h).end(); },
+    function blockquote(h) { this.output.start('blockquote').add(h).end(); },
+
+    function doc() {
+      this.output.tag(this.DocumentReadWriteView.create({data: '<i>insert text here</i>'}));
     },
 
     function dao(daoKey) {
@@ -143,6 +166,13 @@ foam.CLASS({
       this.output.tag('br');
       var cmds = [
         [ 'help',     'Display help' ],
+        [ '#',        'Heading 1' ],
+        [ '##',       'Heading 2' ],
+        [ '##',       'Heading 3' ],
+        [ '**',       'Bold' ],
+        [ '*',        'Italic' ],
+        [ '>',        'Blockquote' ],
+        [ 'doc',      'Embed document', true ],
         [ 'flows',    'Display saved flows', true ],
         [ 'cls',      'Clear console output', true ],
         [ 'dao',      'Perform DAO operation' ], // ???: Combine with daos with args?
@@ -190,13 +220,23 @@ foam.CLASS({
       cmd = cmd.trim();
       if ( ! cmd ) return;
       if ( cmd != 'history' && cmd != 'history()' && cmd != 'help' ) this.history_.push(cmd);
-      this.output.tag('br').start('b').add('> ').end().add(cmd);
+      this.output.tag('br').start().show(self.showPrompts$).start('b').add('> ').end().add(cmd);
 
       with ( this.scope ) {
         with ( this.localScope ) {
-          var r = eval(cmd);
+          var r, arg
+          try {
+            r = eval(cmd);
+          } catch (x) {
+            var i = cmd.indexOf(' ');
+            if ( i != -1 ) {
+              arg = cmd.substring(i+1);
+              cmd = cmd.substring(0,i);
+              r = this.localScope[cmd];
+            }
+          }
           if ( typeof r === 'function' ) {
-            r = r();
+            r = arg ? r(arg) : r();
           }
           if ( r instanceof Promise ) {
             r = await r;
@@ -205,6 +245,14 @@ foam.CLASS({
       }
 
       this.log(r);
+    }
+  ],
+
+  actions: [
+    {
+      name: 'togglePrompts',
+      code: function() { this.showPrompts = ! this.showPrompts; },
+      keyboardShortcuts: [ 'esc' ]
     }
   ],
 

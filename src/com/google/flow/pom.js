@@ -3,6 +3,7 @@ foam.POM({
   files: [
     { name: 'Calc',                   flags: 'js' },
     { name: "Canvas",                 flags: "js" },
+    { name: "DocumentReadWriteView",  flags: "js" },
     { name: "Select",                 flags: "js" },
     { name: "TreeView",               flags: "js" },
     { name: "Console",                flags: "js" },
