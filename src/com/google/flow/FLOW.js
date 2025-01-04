@@ -10,6 +10,23 @@ foam.CLASS({
 
   ids: [ 'name' ],
 
+  axioms: [
+    {
+      class: 'foam.comics.v2.CannedQuery',
+      label: 'Public',
+      predicateFactory: function(e) {
+        return e.EQ(this.IS_PUBLIC, e.TRUE);
+      }
+    },
+    {
+      class: 'foam.comics.v2.CannedQuery',
+      label: 'Private',
+      predicateFactory: function(e) {
+        return e.EQ(this.IS_PUBLIC, e.FALSE);
+      }
+    }
+  ],
+
   properties: [
     {
       class: 'String',
@@ -18,6 +35,10 @@ foam.CLASS({
     {
       class: 'String',
       name: 'description'
+    },
+    {
+      class: 'Boolean',
+      name: 'isPublic'
     },
     {
       class: 'FObjectArray',
