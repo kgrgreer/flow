@@ -31,7 +31,13 @@ foam.CLASS({
   properties: [
     {
       class: 'String',
-      name: 'daoKey'
+      name: 'daoKey',
+      adapt: function(o, n) {
+        if ( this.__context__[n] ) return n;
+        if ( this.__context__[n + 'DAO'] ) return n + 'DAO';
+        if ( n.endsWith('s') ) return n.substring(0, n.length-1) + 'DAO';
+        return n;
+      }
     },
     {
       name: 'dao',
