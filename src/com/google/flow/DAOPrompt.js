@@ -23,6 +23,9 @@ foam.CLASS({
       width: auto;
       height: 22px;
     }
+    ^ select[name="selectChoice"] {
+      width: 130px;
+    }
   `,
 
   properties: [
@@ -63,6 +66,23 @@ foam.CLASS({
       name: 'select'
     },
     {
+      name: 'orderChoice',
+      view: function(_, X) {
+        var choices = [ '--' ];
+        X.data.dao.of.getAxiomsByClass(foam.core.Property).forEach(p => {
+          if ( p.hidden ) return;
+          choices.push(p.name);
+          choices.push('-' + p.name);
+        });
+        return { class: 'foam.u2.view.ChoiceView', choices: choices };
+      },
+      postSet: function(o, n) {
+        if ( n == '--' ) return;
+        if ( this.order ) this.order += ',';
+        this.order += n;
+      }
+    },
+    {
       name: 'whereChoice',
       view: function(_, X) {
         var choices = [
@@ -70,7 +90,6 @@ foam.CLASS({
           'MLang',
           'FScript'
         ];
-        choices.push('FOO');
         X.data.dao.of.getAxiomsByClass(foam.comics.v2.CannedQuery).forEach(q => {
           choices.push([ q.predicate, q.label ]);
         });
@@ -97,6 +116,7 @@ foam.CLASS({
         'FUNCTION',
         'JS',
         'TREE'
+        // A..Z Grid
         // PROJECTION ? Same as Sequence?
         // Array (store in variable?
       ] }
@@ -119,7 +139,7 @@ foam.CLASS({
         add('skip(',    this.SKIP,  ').').br().
         add('limit(',   this.LIMIT, ').').br().
         add('where(').start(this.WHERE_CHOICE).style({'display': 'inline-flex'}).end().add(' ', this.WHERE, ').').br().
-        add('orderBy(', this.ORDER, ').').br().
+        add('orderBy(', this.ORDER, ' ').start(this.ORDER_CHOICE).style({'display': 'inline-flex'}).end().add(').').br().
         add('select(').start(this.SELECT_CHOICE).style({'display': 'inline-flex'}).end().add(' ',  this.SELECT, ')').
       end().
       add(this.RUN, ' ', this.CLEAR).br().
