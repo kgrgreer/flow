@@ -273,3 +273,12 @@ foam.CLASS({
     }
   ]
 });
+
+/* TODO:
+   modes: Doc, Prompt/Console, Calc
+   Input
+   describe
+   help MQL
+   add describe to daos
+   add search to daos
+*/

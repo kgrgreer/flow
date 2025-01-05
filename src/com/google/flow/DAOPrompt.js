@@ -31,6 +31,12 @@ foam.CLASS({
       name: 'daoKey'
     },
     {
+      name: 'dao',
+      factory: function() {
+        return this.__context__[this.daoKey];
+      }
+    },
+    {
       class: 'Int',
       name: 'skip',
       displayWidth: 5
@@ -45,12 +51,12 @@ foam.CLASS({
       class: 'String',
       name: 'where',
       // TODO: support canned queries
-      displayWidth: 80
+      displayWidth: 70
     },
     {
       class: 'String',
       name: 'order',
-      displayWidth: 78
+      displayWidth: 70
     },
     {
       // TODO: add support for Detail, Table, Citation, CSV, XML, JSON, Group By, Grid By, Count, Projection, ...
@@ -58,15 +64,23 @@ foam.CLASS({
     },
     {
       name: 'whereChoice',
-      view: { class: 'foam.u2.view.ChoiceView', choices: [
-        'MQL',
-        'MLang',
-        'FScript'
-      ] }
+      view: function(_, X) {
+        var choices = [
+          'MQL',
+          'MLang',
+          'FScript'
+        ];
+        choices.push('FOO');
+        X.data.dao.of.getAxiomsByClass(foam.comics.v2.CannedQuery).forEach(q => {
+          choices.push([ q.predicate, q.label ]);
+        });
+        return { class: 'foam.u2.view.ChoiceView', choices: choices };
+      }
     },
     {
       name: 'selectChoice',
       view: { class: 'foam.u2.view.ChoiceView', choices: [
+        'CONTROLLER',
         'VIEW',
         'EDIT',
         'CITATION',
@@ -79,7 +93,12 @@ foam.CLASS({
         'GRID_BY',
         'PIE',
         'SEQUENCE',
-        'TEMPLATE'
+        'TEMPLATE',
+        'FUNCTION',
+        'JS',
+        'TREE'
+        // PROJECTION ? Same as Sequence?
+        // Array (store in variable?
       ] }
     },
     'content',
@@ -119,7 +138,7 @@ foam.CLASS({
       code: function() {
         this.clear();
         this.count = 0;
-        var dao = this.__context__[this.daoKey];
+        var dao = this.dao;
         if ( this.where ) dao = dao.where(this.MQL(this.where));
         if ( this.limit ) dao = dao.limit(this.limit);
         if ( this.skip  ) dao = dao.skip(this.skip);
