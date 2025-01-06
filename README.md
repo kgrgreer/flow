@@ -20,6 +20,8 @@ https://www.youtube.com/watch?v=-fbq-_H6Lf4
 1. 2D Canvas
 2. Simple Spreadsheet - A conventional spreadsheet.
 3. Calculator - Like a 1-dimensional spreadsheet that resembles a more conventional calculator but with the advantage that if you update a value, then all dependent values will also update.
+4. Console - An interactive console.
+5. Doc - A simple document editor.
 
 Future workspace types could include things like a 3D world, databases, text documents, slide-shows, graphs, animation timelines, musical scores or any number of other types of containers.
 
@@ -37,17 +39,29 @@ FLOW supports conventional Logo-like turtle graphics, but with a few extensions:
 FLOW was originally created as an experimental sub-project of the [FOAM2](https://github.com/foam-framework/foam2) framework at Google. This project forked from that original project, but is no longer associated with Google.
 
 # Installation
+Install java, nodejs and maven, if required. On Linux, you can do this with:
+
+    sudo apt-get install default-jdk
+    sudo apt-get install maven
+    sudo apt-get install nodejs
+
 To run flow, first clone the FOAM3 repository:
 
-    $ git clone https://github.com/kgrgreer/flow.git
+    $ git clone --recursive https://github.com/kgrgreer/flow.git
+
+Create the necessary opt directory:
+
+    sudo mkdir /opt/flow
+    sudo chmod 777 /opt/flow/
 
 Then start the NANOS server:
 
+    $ cd flow
     $ ./build.sh
 
 Then point your web browser to:
 
-    http://localhost:8080/flow.html
+    http://localhost:8080/zac.html
     
 # Source Code
 [https://github.com/kgrgreer/foam3/tree/development/src/com/google/flow](https://github.com/kgrgreer/flow/tree/main/src/com/google/flow)
