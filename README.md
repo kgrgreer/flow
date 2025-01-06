@@ -20,6 +20,8 @@ https://www.youtube.com/watch?v=-fbq-_H6Lf4
 1. 2D Canvas
 2. Simple Spreadsheet - A conventional spreadsheet.
 3. Calculator - Like a 1-dimensional spreadsheet that resembles a more conventional calculator but with the advantage that if you update a value, then all dependent values will also update.
+4. Console - An interactive console.
+5. Doc - A simple document editor.
 
 Future workspace types could include things like a 3D world, databases, text documents, slide-shows, graphs, animation timelines, musical scores or any number of other types of containers.
 
