@@ -120,8 +120,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'where',
-      // TODO: support canned queries
-      displayWidth: 60
+      displayWidth: 55
     },
     {
       class: 'String',
@@ -198,7 +197,7 @@ foam.CLASS({
 
       this.
       add(this.daoKey$, '.').
-      start('blockquote').style({'margin-top': '0'}).
+        start('blockquote').style({'margin-top': '0', 'margin-left': '20px'}).
         add('skip(',    this.SKIP,  ').').br().
         add('limit(',   this.LIMIT, ').').br().
         add('where(').start(this.WHERE_CHOICE).style({'display': 'inline-flex'}).end().add(' ', this.WHERE, ' ').start(this.PROPERTY_CHOICE).style({'display': 'inline-flex'}).end().add(').').br().
