@@ -9,7 +9,12 @@ foam.CLASS({
   name: 'Console',
   extends: 'foam.u2.Controller',
 
-  requires: [ 'com.google.flow.DAOPrompt', 'foam.flow.Document', 'com.google.flow.DocumentReadWriteView' ],
+  requires: [
+    'com.google.flow.DAOPrompt',
+    'com.google.flow.DocumentReadWriteView',
+    'foam.flow.Document',
+    'foam.nanos.boot.NSpec'
+  ],
 
   imports: [ 'flowDAO', 'nSpecDAO', 'scope' ],
 
@@ -79,8 +84,8 @@ foam.CLASS({
           dao:      this.dao.bind(this),
           this:     this,
           cls:      this.cls.bind(this),
-          daos:     this.services.bind(this, foam.mlang.Expressions.create().ENDS_WITH(foam.nanos.boot.NSpec.NAME, 'DAO')),
-          services: this.services.bind(this),
+          daos:     this.services.bind(this, foam.mlang.Expressions.create().ENDS_WITH(this.NSpec.NAME, 'DAO')),
+          services: this.services.bind(this, null),
           output:   this.output
         };
       }
@@ -196,11 +201,14 @@ foam.CLASS({
         });
     },
 
-    async function services(opt_query) {
+    async function services(opt_query, opt_nameQuery) {
+      var dao = this.nSpecDAO;
+      if ( opt_query ) dao = dao.where(opt_query);
+      if ( opt_nameQuery ) dao = dao.where(this.CONTAINS_IC(this.NSpec.NAME, opt_nameQuery));
       var self = this;
       this.output.tag('br');
       this.output.start('table').attr('width', '100%').
-        select(opt_query ? this.nSpecDAO.where(opt_query) : this.nSpecDAO, function(n) {
+        select(dao, function(n) {
           this.start('tr').
             start('th').attr('align', 'left').call(function() {
               if ( n.name.endsWith('DAO') ) {
