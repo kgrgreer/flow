@@ -71,7 +71,6 @@ foam.CLASS({
         'CSV',
         'JSON',
         'XML',
-        'COUNT',
         'GROUP_BY',
         'GRID_BY',
         'PIE',
@@ -120,12 +119,12 @@ foam.CLASS({
       class: 'String',
       name: 'where',
       // TODO: support canned queries
-      displayWidth: 70
+      displayWidth: 60
     },
     {
       class: 'String',
       name: 'order',
-      displayWidth: 60
+      displayWidth: 70
     },
     {
       // TODO: add support for Detail, Table, Citation, CSV, XML, JSON, Group By, Grid By, Count, Projection, ...
@@ -146,6 +145,23 @@ foam.CLASS({
         if ( n == '--' ) return;
         if ( this.order ) this.order += ',';
         this.order += n;
+      }
+    },
+    {
+      name: 'propertyChoice',
+      view: function(_, X) {
+        var choices = [ '--' ];
+        X.data.dao.of.getAxiomsByClass(foam.core.Property).forEach(p => {
+          if ( p.hidden ) return;
+          choices.push(p.name);
+        });
+        return { class: 'foam.u2.view.ChoiceView', choices: choices };
+      },
+      preSet: function(o, n) {
+        if ( n == '--' ) return;
+        if ( this.where ) this.where += ' ';
+        this.where += n;
+        return o;
       }
     },
     {
@@ -184,7 +200,7 @@ foam.CLASS({
       start('blockquote').style({'margin-top': '0'}).
         add('skip(',    this.SKIP,  ').').br().
         add('limit(',   this.LIMIT, ').').br().
-        add('where(').start(this.WHERE_CHOICE).style({'display': 'inline-flex'}).end().add(' ', this.WHERE, ').').br().
+        add('where(').start(this.WHERE_CHOICE).style({'display': 'inline-flex'}).end().add(' ', this.WHERE, ' ').start(this.PROPERTY_CHOICE).style({'display': 'inline-flex'}).end().add(').').br().
         add('orderBy(', this.ORDER, ' ').start(this.ORDER_CHOICE).style({'display': 'inline-flex'}).end().add(').').br().
         add('select(').start(this.SELECT_CHOICE).style({'display': 'inline-flex'}).end().add(' ',  this.SELECT, ')').
       end().
