@@ -1,6 +1,7 @@
 foam.POM({
   name: 'flow',
   files: [
+    { name: '../../../../foam3/src/foam/u2/mlang/Table', flags: 'js' },
     { name: 'Calc',                   flags: 'js' },
     { name: "Canvas",                 flags: "js" },
     { name: "DocumentReadWriteView",  flags: "js" },

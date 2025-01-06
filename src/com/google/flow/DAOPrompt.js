@@ -28,6 +28,53 @@ foam.CLASS({
     }
   `,
 
+  constants: {
+    SINKS: [
+      [
+        function() { return foam.u2.mlang.Table.create({}, this); },
+        'TABLE'
+      ],
+      [
+        function(c) {
+          var c2 = c.content.startContext({controllerMode: foam.u2.ControllerMode.VIEW});
+          return o => { c.count++; setTimeout(() => c2.add(o), 1); };
+        },
+        'VIEW'
+      ],
+      [
+        function(c) {
+          return o => {
+            c.count++;
+            var data = foam.comics.DAOUpdateController.create({data: o, dao: c.dao}, this);
+            c.tag({class: 'foam.comics.DAOUpdateControllerView', controllerMode: foam.u2.ControllerMode.EDIT, detailView: 'foam.u2.DetailView', dao: c.dao, data: data });
+          };
+        },
+        'EDIT'
+      ]
+        /*
+        'CONTROLLER',
+        'VIEW',
+        'EDIT',
+        'CITATION',
+        'CSV',
+        'JSON',
+        'XML',
+        'COUNT',
+        'GROUP_BY',
+        'GRID_BY',
+        'PIE',
+        'SEQUENCE',
+        'TEMPLATE',
+        'FUNCTION',
+        'JS',
+        'TREE'
+        // A..Z Grid
+        // PROJECTION ? Same as Sequence?
+        // Array (store in variable?
+        */
+    ]
+  },
+
   properties: [
     {
       class: 'String',
@@ -53,8 +100,9 @@ foam.CLASS({
     {
       class: 'Int',
       name: 'limit',
+      value: 100,
       placeholder: '',
-      size: 4
+      size: 5
     },
     {
       class: 'String',
@@ -65,7 +113,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'order',
-      displayWidth: 70
+      displayWidth: 60
     },
     {
       // TODO: add support for Detail, Table, Citation, CSV, XML, JSON, Group By, Grid By, Count, Projection, ...
@@ -104,28 +152,8 @@ foam.CLASS({
     },
     {
       name: 'selectChoice',
-      view: { class: 'foam.u2.view.ChoiceView', choices: [
-        'CONTROLLER',
-        'VIEW',
-        'EDIT',
-        'CITATION',
-        'TABLE', // foam.u2.mlang.Table.create();
-        'CSV',
-        'JSON',
-        'XML',
-        'COUNT',
-        'GROUP_BY',
-        'GRID_BY',
-        'PIE',
-        'SEQUENCE',
-        'TEMPLATE',
-        'FUNCTION',
-        'JS',
-        'TREE'
-        // A..Z Grid
-        // PROJECTION ? Same as Sequence?
-        // Array (store in variable?
-      ] }
+      factory: function() { return this.SINKS[0][0]; },
+      view: function(_, X) { return { class: 'foam.u2.view.ChoiceView', choices: X.data.SINKS }; }
     },
     'content',
     'count'
@@ -161,7 +189,7 @@ foam.CLASS({
   actions: [
     {
       name: 'run',
-      code: function() {
+      code: async function() {
         this.clear();
         this.count = 0;
         var dao = this.dao;
@@ -193,7 +221,10 @@ foam.CLASS({
           if ( c ) dao = dao.orderBy(c);
         }
 //        dao.select(o => { this.count++; this.add(o); });
-        dao.select(o => { this.count++; setTimeout(() => this.add(o), 1); });
+        //        dao.select(o => { this.count++; setTimeout(() => this.add(o), 1); });
+        var sink = this.selectChoice(this);
+        sink = await dao.select(sink);
+        this.add(sink);
       }
     },
     function clear() {
