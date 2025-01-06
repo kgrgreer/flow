@@ -30,6 +30,8 @@ foam.CLASS({
 
   constants: {
     SINKS: [
+      // TODO: Add a second optional function to handle outputting
+      // U3 should have something other than toE()
       [
         function() { return foam.u2.mlang.Table.create({}, this); },
         'TABLE'
@@ -124,10 +126,9 @@ foam.CLASS({
     {
       class: 'String',
       name: 'order',
-      displayWidth: 70
+      displayWidth: 60
     },
     {
-      // TODO: add support for Detail, Table, Citation, CSV, XML, JSON, Group By, Grid By, Count, Projection, ...
       name: 'select'
     },
     {
@@ -221,6 +222,9 @@ foam.CLASS({
         this.clear();
         this.count = 0;
         var dao = this.dao;
+        if ( this.whereChoice && typeof this.whereChoice != 'string' ) {
+          dao = dao.where(this.whereChoice);
+        }
         if ( this.where ) dao = dao.where(this.MQL(this.where));
         if ( this.limit ) dao = dao.limit(this.limit);
         if ( this.skip  ) dao = dao.skip(this.skip);
@@ -260,3 +264,5 @@ foam.CLASS({
     }
   ]
 });
+
+// Does DAO.orderBy() take vargs? It should.
