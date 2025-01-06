@@ -60,9 +60,14 @@ foam.CLASS({
         },
         'CITATION'
       ],
+      [
+        function() {
+          return foam.mlang.Expressions.create().COUNT();
+        },
+        'COUNT'
+      ],
         /*
         'CONTROLLER',
-        'CITATION',
         'CSV',
         'JSON',
         'XML',
