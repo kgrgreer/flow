@@ -50,11 +50,18 @@ foam.CLASS({
           };
         },
         'EDIT'
-      ]
+      ],
+      [
+        function(c) {
+          return o => {
+            c.count++;
+            setTimeout(() => c.tag(foam.u2.CitationView, {data: o}), 1);
+          };
+        },
+        'CITATION'
+      ],
         /*
         'CONTROLLER',
-        'VIEW',
-        'EDIT',
         'CITATION',
         'CSV',
         'JSON',
