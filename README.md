@@ -37,17 +37,29 @@ FLOW supports conventional Logo-like turtle graphics, but with a few extensions:
 FLOW was originally created as an experimental sub-project of the [FOAM2](https://github.com/foam-framework/foam2) framework at Google. This project forked from that original project, but is no longer associated with Google.
 
 # Installation
+Install java, nodejs and maven, if required. On Linux, you can do this with:
+
+    sudo apt-get install default-jdk
+    sudo apt-get install maven
+    sudo apt-get install nodejs
+
 To run flow, first clone the FOAM3 repository:
 
-    $ git clone https://github.com/kgrgreer/flow.git
+    $ git clone --recursive https://github.com/kgrgreer/flow.git
+
+Create the necessary opt directory:
+
+    sudo mkdir /opt/flow
+    sudo chmod 777 /opt/flow/
 
 Then start the NANOS server:
 
+    $ cd flow
     $ ./build.sh
 
 Then point your web browser to:
 
-    http://localhost:8080/flow.html
+    http://localhost:8080/zac.html
     
 # Source Code
 [https://github.com/kgrgreer/foam3/tree/development/src/com/google/flow](https://github.com/kgrgreer/flow/tree/main/src/com/google/flow)
