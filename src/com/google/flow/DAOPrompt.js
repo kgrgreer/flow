@@ -68,6 +68,12 @@ foam.CLASS({
         },
         'COUNT'
       ],
+      [
+        function() {
+          return foam.dao.CSVSink.create();
+        },
+        'CSV'
+      ],
         /*
         'CONTROLLER',
         'CSV',

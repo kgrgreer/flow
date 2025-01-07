@@ -16,7 +16,7 @@ foam.CLASS({
     {
       name: 'scope',
       factory: function() {
-        var self = this;
+        var self  = this;
         var scope = {
           this: self,
           repeat: function(n, fn) {
