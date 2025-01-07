@@ -81,7 +81,7 @@ foam.CLASS({
     function execute(e) {
       var csv = this.CSVSink.create({of: this.of});
       this.dao.select(csv).then(c => {
-        e.add(c.csv);
+        e.start('pre').add(c.csv);
       });
     }
   ]
@@ -113,7 +113,7 @@ foam.CLASS({
   `,
 
   constants: {
-    // DAO-Operation label, addConfigToE(), execute(dao, e)
+    // DAO-Operation label, addConfigToE(), execute(dao, e), toPrompt
     AGENTS: [
       [ 'CSV', 'CSV' ],
       'Table',
