@@ -6,6 +6,90 @@
 
 foam.CLASS({
   package: 'com.google.flow',
+  name: 'AbstractDAOAgent',
+
+  implements: [
+    'foam.mlang.Expressions'
+  ],
+
+  properties: [
+    'dao',
+    {
+      name: 'of',
+      factory: function() { return this.dao.of; }
+    }
+  ],
+
+  methods: [
+    function addConfigToE() {},
+    function execute() { }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'CountDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  methods: [
+    function execute(e) {
+      this.dao.select(this.COUNT()).then(c => {
+        e.start('b').add('Count: ').end().add(c.value).br();
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'ScrollTableDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  methods: [
+    function execute(e) {
+      e.tag({class: 'foam.u2.table.TableView', data: this.dao});
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'TableDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  methods: [
+    function execute(e) {
+      this.dao.select(foam.u2.mlang.Table.create({}, this)).then(t => {
+        e.add(t);
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'CSVDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  requires: [ 'foam.dao.CSVSink' ],
+
+  methods: [
+    function execute(e) {
+      var csv = this.CSVSink.create({of: this.of});
+      this.dao.select(csv).then(c => {
+        e.add(c.csv);
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
   name: 'DAOPrompt',
   extends: 'foam.u2.Controller',
 
@@ -29,6 +113,13 @@ foam.CLASS({
   `,
 
   constants: {
+    // DAO-Operation label, addConfigToE(), execute(dao, e)
+    AGENTS: [
+      [ 'CSV', 'CSV' ],
+      'Table',
+      'ScrollTable',
+      [ 'Count', 'COUNT' ]
+    ],
     SINKS: [
       // TODO: Add a second optional function to handle outputting
       // U3 should have something other than toE()
@@ -186,8 +277,8 @@ foam.CLASS({
     },
     {
       name: 'selectChoice',
-      factory: function() { return this.SINKS[0][0]; },
-      view: function(_, X) { return { class: 'foam.u2.view.ChoiceView', choices: X.data.SINKS }; }
+      factory: function() { return this.AGENTS[0][0]; },
+      view: function(_, X) { return { class: 'foam.u2.view.ChoiceView', choices: X.data.AGENTS }; }
     },
     'content',
     'count'
@@ -259,9 +350,12 @@ foam.CLASS({
         }
 //        dao.select(o => { this.count++; this.add(o); });
         //        dao.select(o => { this.count++; setTimeout(() => this.add(o), 1); });
-        var sink = this.selectChoice(this);
-        sink = await dao.select(sink);
-        this.add(sink);
+        var cls = foam.lookup(this.cls_.package + '.' + this.selectChoice + 'DAOAgent');
+        var agent = cls.create({dao: dao});
+        agent.execute(this);
+//        var sink = this.selectChoice(this);
+//        sink = await dao.select(sink);
+//        this.add(sink);
       }
     },
     function clear() {
