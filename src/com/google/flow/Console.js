@@ -77,6 +77,7 @@ foam.CLASS({
           '**':     this.bold.bind(this),
           '*':      this.italic.bind(this),
           '>':      this.blockquote.bind(this),
+          models:   this.models.bind(this),
           cells:    this.cells.bind(this),
           doc:      this.doc.bind(this),
           history:  this.history.bind(this),
@@ -128,8 +129,12 @@ foam.CLASS({
     function italic(h) { this.outputDiv.start('i').add(h).end(); },
     function blockquote(h) { this.outputDiv.start('blockquote').add(h).end(); },
 
+    function models() {
+      this.outputDiv.tag(foam.doc.DocBrowser);
+    },
+
     function cells() {
-      this.outputDiv.tag(this.Cells.create());
+      this.outputDiv.tag(this.Cells);
     },
 
     function doc() {
@@ -183,6 +188,8 @@ foam.CLASS({
         [ '**',       'Bold' ],
         [ '*',        'Italic' ],
         [ '>',        'Blockquote' ],
+        [ 'models',   'Browse Models', true ],
+        [ 'cells',    'Embed spreadsheet', true ],
         [ 'doc',      'Embed document', true ],
         [ 'flows',    'Display saved flows', true ],
         [ 'cls',      'Clear console output', true ],
