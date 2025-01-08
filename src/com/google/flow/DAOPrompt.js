@@ -186,8 +186,8 @@ foam.CLASS({
         row++;
       }).then(() => {
         var cells = this.Cells.create({rows: row+2, columns: ps.length+2}, this);
-        e.tag(cells);
         cells.loadCells(cs);
+        e.tag(cells);
       });
     }
   ]
@@ -251,8 +251,8 @@ foam.CLASS({
       [ 'Edit', 'Edit' ],
       [ 'Table', 'Table' ],
       [ 'ScrollTable', 'ScrollTable' ],
-      [ 'Count', 'COUNT' ],
       [ 'Cells', 'Cells' ],
+      [ 'Count', 'COUNT' ],
       [ 'All', 'All' ]
     ]
         /*

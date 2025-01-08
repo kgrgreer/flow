@@ -54,7 +54,7 @@ foam.CLASS({
     },
     'input_',
     {
-      name: 'output'
+      name: 'outputDiv'
     },
     {
       class: 'Boolean',
@@ -103,7 +103,7 @@ foam.CLASS({
 
       this.
         addClass(this.myClass()).
-        start('div', null, this.output$).addClass(this.myClass('output')).end().
+        start('div', null, this.outputDiv$).addClass(this.myClass('output')).end().
         start('span').
           style({display: 'inline-flex', float: 'left'}).
         start('b').style({'margin-top': '6px', 'margin-right': '4px', display: 'flex', 'white-space': 'pre'}).call(function() { self.outputLink('help', () => self.eval_('help'), this); }).add(' >').end().
@@ -116,45 +116,45 @@ foam.CLASS({
 
     function log(...args) {
       if ( args.length == 0 ) return;
-      this.output.tag('br');
-      this.output.add(args.join(' '));
+      this.outputDiv.tag('br');
+      this.outputDiv.add(args.join(' '));
       this.element_.scrollTop = this.element_.scrollHeight;
     },
 
-    function h1(h) { this.output.start('h1').add(h).end(); },
-    function h2(h) { this.output.start('h2').add(h).end(); },
-    function h3(h) { this.output.start('h3').add(h).end(); },
-    function bold(h) { this.output.start('b').add(h).end(); },
-    function italic(h) { this.output.start('i').add(h).end(); },
-    function blockquote(h) { this.output.start('blockquote').add(h).end(); },
+    function h1(h) { this.outputDiv.start('h1').add(h).end(); },
+    function h2(h) { this.outputDiv.start('h2').add(h).end(); },
+    function h3(h) { this.outputDiv.start('h3').add(h).end(); },
+    function bold(h) { this.outputDiv.start('b').add(h).end(); },
+    function italic(h) { this.outputDiv.start('i').add(h).end(); },
+    function blockquote(h) { this.outputDiv.start('blockquote').add(h).end(); },
 
     function cells() {
-      this.output.tag(this.Cells.create());
+      this.outputDiv.tag(this.Cells.create());
     },
 
     function doc() {
-      this.output.tag(this.DocumentReadWriteView.create({data: '<i>insert text here</i>'}));
+      this.outputDiv.tag(this.DocumentReadWriteView.create({data: '<i>insert text here</i>'}));
     },
 
     function dao(daoKey) {
-      this.output.tag(this.DAOPrompt.create({daoKey: daoKey}));
+      this.outputDiv.tag(this.DAOPrompt.create({daoKey: daoKey}));
     },
 
     function cls() {
       // TODO: add optional parameter to control number of commands to clear?
-      this.output.removeAllChildren();
+      this.outputDiv.removeAllChildren();
     },
 
     function history() {
       this.history_.forEach(h => {
-        this.output.tag('br');
+        this.outputDiv.tag('br');
         this.outputLink(h, () => this.eval_(h));
       });
     },
 
     // TODO: Just make be a View class
     function outputLink(text, action, self) {
-      self = self || this.output;
+      self = self || this.outputDiv;
       self.start('a').style({
         color: '-webkit-link',
         cursor: 'pointer',
@@ -166,7 +166,7 @@ foam.CLASS({
     function listFlows() {
       return this.flowDAO.select({
         put: o => {
-          this.output.tag('br');
+          this.outputDiv.tag('br');
           this.outputLink(o.name, () => this.scope.load(o.name));
         }
       }).then(function() { return undefined; });
@@ -174,7 +174,7 @@ foam.CLASS({
 
     function help() {
       var self = this;
-      this.output.tag('br');
+      this.outputDiv.tag('br');
       var cmds = [
         [ 'help',     'Display help' ],
         [ '#',        'Heading 1' ],
@@ -193,7 +193,7 @@ foam.CLASS({
         [ 'services', 'Display available services', true ],
         [ 'save',     'Save the current flow to a specified name' ]
       ];
-      this.output.start('table').attr('width', '100%').
+      this.outputDiv.start('table').attr('width', '100%').
         forEach(cmds, function(c) {
           this.start('tr').
             start('th').attr('align', 'left').call(function() {
@@ -212,8 +212,8 @@ foam.CLASS({
       if ( opt_query ) dao = dao.where(opt_query);
       if ( opt_nameQuery ) dao = dao.where(this.CONTAINS_IC(this.NSpec.NAME, opt_nameQuery));
       var self = this;
-      this.output.tag('br');
-      this.output.start('table').attr('width', '100%').
+      this.outputDiv.tag('br');
+      this.outputDiv.start('table').attr('width', '100%').
         select(dao, function(n) {
           this.start('tr').
             start('th').attr('align', 'left').call(function() {
@@ -234,7 +234,7 @@ foam.CLASS({
       cmd = cmd.trim();
       if ( ! cmd ) return;
       if ( cmd != 'history' && cmd != 'history()' && cmd != 'help' ) this.history_.push(cmd);
-      this.output.tag('br').start().show(self.showPrompts$).start('b').add('> ').end().add(cmd);
+      this.outputDiv.tag('br').start().show(self.showPrompts$).start('b').add('> ').end().add(cmd);
 
       with ( this.scope ) {
         with ( this.localScope ) {
