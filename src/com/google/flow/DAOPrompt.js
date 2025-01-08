@@ -90,6 +90,103 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'com.google.flow',
+  name: 'XMLDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  methods: [
+    function execute(e) {
+      this.dao.select().then(a => {
+        e.start('pre').add(foam.xml.Pretty.stringify(a.array));
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'JSONDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  methods: [
+    function execute(e) {
+      this.dao.select().then(a => {
+        e.start('pre').add(foam.json.Pretty.stringify(a.array));
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'ViewDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  methods: [
+    function execute(e) {
+      e = e.startContext({controllerMode: foam.u2.ControllerMode.VIEW});
+      this.dao.select(o => e.add(o));
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'EditDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  methods: [
+    function execute(e) {
+      return this.dao.select(o => {
+        var data = foam.comics.DAOUpdateController.create({data: o, dao: this.dao}, this);
+        e.tag({class: 'foam.comics.DAOUpdateControllerView', controllerMode: foam.u2.ControllerMode.EDIT, detailView: 'foam.u2.DetailView', dao: this.dao, data: data });
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'CitationDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  requires: [ 'foam.u2.CitationView' ],
+
+  methods: [
+    function execute(e) {
+      return this.dao.select(o => e.tag(this.CitationView, {data: o}));
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'AllDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  requires: [ 'foam.u2.CitationView' ],
+
+  methods: [
+    function execute(e) {
+      com.google.flow.DAOPrompt.AGENTS.forEach(a => {
+        a = a[0];
+        if ( a == 'All' ) return;
+
+        var cls = foam.lookup(this.cls_.package + '.' + a + 'DAOAgent');
+        var agent = cls.create({dao: this.dao});
+        e.start('h2').add(a).end().start().call(function () { agent.execute(this); });
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
   name: 'DAOPrompt',
   extends: 'foam.u2.Controller',
 
@@ -113,62 +210,21 @@ foam.CLASS({
   `,
 
   constants: {
-    // DAO-Operation label, addConfigToE(), execute(dao, e), toPrompt
     AGENTS: [
+      // Value  Label
       [ 'CSV', 'CSV' ],
-      'Table',
-      'ScrollTable',
-      [ 'Count', 'COUNT' ]
-    ],
-    SINKS: [
-      // TODO: Add a second optional function to handle outputting
-      // U3 should have something other than toE()
-      [
-        function() { return foam.u2.mlang.Table.create({}, this); },
-        'TABLE'
-      ],
-      [
-        function(c) {
-          var c2 = c.content.startContext({controllerMode: foam.u2.ControllerMode.VIEW});
-          return o => { c.count++; setTimeout(() => c2.add(o), 1); };
-        },
-        'VIEW'
-      ],
-      [
-        function(c) {
-          return o => {
-            c.count++;
-            var data = foam.comics.DAOUpdateController.create({data: o, dao: c.dao}, this);
-            c.tag({class: 'foam.comics.DAOUpdateControllerView', controllerMode: foam.u2.ControllerMode.EDIT, detailView: 'foam.u2.DetailView', dao: c.dao, data: data });
-          };
-        },
-        'EDIT'
-      ],
-      [
-        function(c) {
-          return o => {
-            c.count++;
-            setTimeout(() => c.tag(foam.u2.CitationView, {data: o}), 1);
-          };
-        },
-        'CITATION'
-      ],
-      [
-        function() {
-          return foam.mlang.Expressions.create().COUNT();
-        },
-        'COUNT'
-      ],
-      [
-        function() {
-          return foam.dao.CSVSink.create();
-        },
-        'CSV'
-      ],
+      [ 'XML', 'XML' ],
+      [ 'JSON', 'JSON' ],
+      [ 'Citation', 'Citation' ],
+      [ 'View', 'View' ],
+      [ 'Edit', 'Edit' ],
+      [ 'Table', 'Table' ],
+      [ 'ScrollTable', 'ScrollTable' ],
+      [ 'Count', 'COUNT' ],
+      [ 'All', 'All' ]
+    ]
         /*
         'CONTROLLER',
-        'CSV',
-        'JSON',
         'XML',
         'GROUP_BY',
         'GRID_BY',
@@ -178,11 +234,11 @@ foam.CLASS({
         'FUNCTION',
         'JS',
         'TREE'
+        'Cost'
         // A..Z Grid
         // PROJECTION ? Same as Sequence?
         // Array (store in variable?
         */
-    ]
   },
 
   properties: [
@@ -348,14 +404,9 @@ foam.CLASS({
           this.order = s;
           if ( c ) dao = dao.orderBy(c);
         }
-//        dao.select(o => { this.count++; this.add(o); });
-        //        dao.select(o => { this.count++; setTimeout(() => this.add(o), 1); });
         var cls = foam.lookup(this.cls_.package + '.' + this.selectChoice + 'DAOAgent');
         var agent = cls.create({dao: dao});
         agent.execute(this);
-//        var sink = this.selectChoice(this);
-//        sink = await dao.select(sink);
-//        this.add(sink);
       }
     },
     function clear() {
