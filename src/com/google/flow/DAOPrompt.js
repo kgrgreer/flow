@@ -157,7 +157,38 @@ foam.CLASS({
 
   methods: [
     function execute(e) {
-      return this.dao.select(o => e.tag(this.CitationView, {data: o}));
+      this.dao.select(o => e.tag(this.CitationView, {data: o}));
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
+  name: 'CellsDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  requires: [ 'foam.demos.sevenguis.Cells' ],
+
+  methods: [
+    function execute(e) {
+      var ps  = this.of.getAxiomsByClass(foam.core.Property).
+          filter(p => ! p.networkTransient && ! p.hidden);
+      var cs  = {};
+      var row = 1;
+      for ( var i = 0 ; i < ps.length ; i++ ) {
+        cs[String.fromCharCode(65+i) + 0] = '<b>' + ps[i].label + '</b';
+      }
+      this.dao.select(o => {
+        for ( var i = 0 ; i < ps.length ; i++ ) {
+          cs[String.fromCharCode(65+i) + row] = ps[i].get(o);
+        }
+        row++;
+      }).then(() => {
+        var cells = this.Cells.create({rows: row+2, columns: ps.length+2}, this);
+        e.tag(cells);
+        cells.loadCells(cs);
+      });
     }
   ]
 });
@@ -221,11 +252,11 @@ foam.CLASS({
       [ 'Table', 'Table' ],
       [ 'ScrollTable', 'ScrollTable' ],
       [ 'Count', 'COUNT' ],
+      [ 'Cells', 'Cells' ],
       [ 'All', 'All' ]
     ]
         /*
         'CONTROLLER',
-        'XML',
         'GROUP_BY',
         'GRID_BY',
         'PIE',

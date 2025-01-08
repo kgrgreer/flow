@@ -12,6 +12,7 @@ foam.CLASS({
   requires: [
     'com.google.flow.DAOPrompt',
     'com.google.flow.DocumentReadWriteView',
+    'foam.demos.sevenguis.Cells',
     'foam.flow.Document',
     'foam.nanos.boot.NSpec'
   ],
@@ -76,6 +77,7 @@ foam.CLASS({
           '**':     this.bold.bind(this),
           '*':      this.italic.bind(this),
           '>':      this.blockquote.bind(this),
+          cells:    this.cells.bind(this),
           doc:      this.doc.bind(this),
           history:  this.history.bind(this),
           log:      this.log.bind(this),
@@ -125,6 +127,10 @@ foam.CLASS({
     function bold(h) { this.output.start('b').add(h).end(); },
     function italic(h) { this.output.start('i').add(h).end(); },
     function blockquote(h) { this.output.start('blockquote').add(h).end(); },
+
+    function cells() {
+      this.output.tag(this.Cells.create());
+    },
 
     function doc() {
       this.output.tag(this.DocumentReadWriteView.create({data: '<i>insert text here</i>'}));
