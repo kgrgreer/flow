@@ -6,6 +6,36 @@
 
 foam.CLASS({
   package: 'com.google.flow',
+  name: 'AxiomInfo',
+
+  ids: [ 'name' ],
+
+  properties: [
+    {
+      class: 'String',
+      name: 'type',
+      label: 'Axiom Type'
+    },
+    {
+      class: 'String',
+      name: 'source',
+      label: 'Source Class'
+    },
+    {
+      class: 'String',
+      name: 'name'
+    },
+    {
+      class: 'String',
+      name: 'path',
+      label: 'Source Path'
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
   name: 'Console',
   extends: 'foam.u2.Controller',
 
@@ -79,6 +109,7 @@ foam.CLASS({
           '>':      this.blockquote.bind(this),
           models:   this.models.bind(this),
           cells:    this.cells.bind(this),
+          describe: this.describeClass.bind(this),
           doc:      this.doc.bind(this),
           history:  this.history.bind(this),
           log:      this.log.bind(this),
@@ -145,6 +176,25 @@ foam.CLASS({
       this.outputDiv.tag(this.DAOPrompt.create({daoKey: daoKey}));
     },
 
+    function describeClass(cls) {
+      this.log('CLASS:  ', cls.name);
+      this.log('extends:', cls.model_.extends);
+      var dao = foam.dao.ArrayDAO.create({of: com.google.flow.AxiomInfo});
+
+      for ( var key in cls.axiomMap_ ) {
+        var a = cls.axiomMap_[key];
+        dao.put(com.google.flow.AxiomInfo.create({
+          type: a.cls_ ? a.cls_.name : 'anonymous',
+          source: (a.sourceCls_ && a.sourceCls_.name) || 'unknown',
+          name: a.name,
+          path: a.source || ''
+        }));
+      }
+      dao.select(console);
+
+      this.outputDiv.tag({class: 'foam.u2.table.TableView', data: dao});
+    },
+
     function cls() {
       // TODO: add optional parameter to control number of commands to clear?
       this.outputDiv.removeAllChildren();
@@ -190,6 +240,7 @@ foam.CLASS({
         [ '>',        'Blockquote' ],
         [ 'models',   'Browse Models', true ],
         [ 'cells',    'Embed spreadsheet', true ],
+        [ 'describe', 'Describe a Class' ],
         [ 'doc',      'Embed document', true ],
         [ 'flows',    'Display saved flows', true ],
         [ 'cls',      'Clear console output', true ],
@@ -219,6 +270,7 @@ foam.CLASS({
       if ( opt_query ) dao = dao.where(opt_query);
       if ( opt_nameQuery ) dao = dao.where(this.CONTAINS_IC(this.NSpec.NAME, opt_nameQuery));
       var self = this;
+      var sdao;
       this.outputDiv.tag('br');
       this.outputDiv.start('table').attr('width', '100%').
         select(dao, function(n) {
@@ -226,9 +278,16 @@ foam.CLASS({
             start('th').attr('align', 'left').call(function() {
               if ( n.name.endsWith('DAO') ) {
                 self.outputLink(n.name, () => self.eval_('dao("' + n.name + '")'), this);
+                sdao = self.__context__[n.name];
               } else {
                 this.add(n.name);
+                sdao = undefined;
               }
+            }).end().
+            start('td').attr('align', 'left').call(function() {
+              if ( ! sdao ) return;
+              var of = sdao.of;
+              self.outputLink(of.id, () => self.eval_('describe(' + of.id + ')'), this);
             }).end().
             start('td').attr('align', 'left').add(n.description);
         });;
