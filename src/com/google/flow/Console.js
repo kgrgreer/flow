@@ -126,7 +126,6 @@ foam.CLASS({
     }
   ],
 
-
   methods: [
     function render() {
       this.SUPER();
@@ -177,8 +176,8 @@ foam.CLASS({
     },
 
     function describeClass(cls) {
-      this.log('CLASS:  ', cls.name);
-      this.log('extends:', cls.model_.extends);
+      this.outputDiv.br().add('CLASS:  ', cls.name, ' extends: ');
+      this.outputLink(cls.__proto__.id, () => this.eval_('describe(' + cls.__proto__.id + ')'), this.outputDiv);
       var dao = foam.dao.ArrayDAO.create({of: com.google.flow.AxiomInfo});
 
       for ( var key in cls.axiomMap_ ) {
