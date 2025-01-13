@@ -42,12 +42,15 @@ foam.CLASS({
   requires: [
     'com.google.flow.DAOPrompt',
     'com.google.flow.DocumentReadWriteView',
+    'foam.dao.ArrayDAO',
     'foam.demos.sevenguis.Cells',
     'foam.flow.Document',
     'foam.nanos.boot.NSpec'
   ],
 
   imports: [ 'flowDAO', 'nSpecDAO', 'scope' ],
+
+  exports: [ 'modelDAO' ],
 
   css: `
     ^ {
@@ -75,6 +78,9 @@ foam.CLASS({
   `,
 
   properties: [
+    {
+      __copyFrom__: 'foam.doc.ModelBrowser.MODEL_DAO'
+    },
     {
       class: 'String',
       name: 'input',
@@ -176,6 +182,17 @@ foam.CLASS({
     },
 
     function describeClass(cls) {
+      if ( foam.String.isInstance(cls) ) {
+        cls = foam.lookup(cls);
+        if ( cls == null ) {
+          log('Unknown class');
+          return;
+        }
+      }
+      // TODO: add ability to specify how SimpleClassView writes links so it can hyperlink back to this command
+      this.outputDiv.tag(foam.doc.SimpleClassView, {data: cls});
+      return;
+      /*
       this.outputDiv.br().add('CLASS:  ', cls.name, ' extends: ');
       this.outputLink(cls.__proto__.id, () => this.eval_('describe(' + cls.__proto__.id + ')'), this.outputDiv);
       var dao = foam.dao.ArrayDAO.create({of: com.google.flow.AxiomInfo});
@@ -192,6 +209,7 @@ foam.CLASS({
       dao.select(console);
 
       this.outputDiv.tag({class: 'foam.u2.table.TableView', data: dao});
+      */
     },
 
     function cls() {
@@ -356,8 +374,8 @@ foam.CLASS({
 /* TODO:
    modes: Doc, Prompt/Console, Calc
    Input
-   describe
+   describe: SimpleClassView
    help MQL
-   add describe to daos
+   help keyboard shortcut
    scrollbar to skip
 */
