@@ -6,6 +6,30 @@
 
 foam.CLASS({
   package: 'com.google.flow',
+  name: 'Link',
+  extends: 'foam.u2.View',
+
+  css: `^ {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+  }`,
+
+  properties: [
+    [ 'nodeName', 'a' ],
+  ],
+
+  methods: [
+    function render() {
+      this.SUPER();
+      this.addClass();
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
   name: 'AbstractDAOAgent',
 
   implements: [
@@ -226,9 +250,12 @@ foam.CLASS({
   ],
 
   requires: [
+    'com.google.flow.Link',
     'foam.parse.QueryParser',
     'foam.u2.DetailView'
   ],
+
+  imports: [ 'eval_' ],
 
   css: `
     ^ .foam-u2-TextInputCSS {
@@ -380,7 +407,7 @@ foam.CLASS({
       this.addClass();
 
       this.
-      add(this.daoKey$, '.').
+        start(this.Link).add(this.daoKey$, '.').on('click', this.describe).end().
         start('blockquote').style({'margin-top': '0', 'margin-left': '20px'}).
         add('skip(',    this.SKIP,  ').').br().
         add('limit(',   this.LIMIT, ').').br().
@@ -435,13 +462,19 @@ foam.CLASS({
           this.order = s;
           if ( c ) dao = dao.orderBy(c);
         }
-        var cls = foam.lookup(this.cls_.package + '.' + this.selectChoice + 'DAOAgent');
+        var cls   = foam.lookup(this.cls_.package + '.' + this.selectChoice + 'DAOAgent');
         var agent = cls.create({dao: dao});
         agent.execute(this);
       }
     },
     function clear() {
       this.content.removeAllChildren();
+    }
+  ],
+
+  listeners: [
+    function describe() {
+      this.eval_('describe ' + this.dao.of.id);
     }
   ]
 });

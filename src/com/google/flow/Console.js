@@ -50,7 +50,7 @@ foam.CLASS({
 
   imports: [ 'flowDAO', 'nSpecDAO', 'scope' ],
 
-  exports: [ 'modelDAO' ],
+  exports: [ 'eval_', 'modelDAO' ],
 
   css: `
     ^ {
