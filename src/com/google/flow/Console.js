@@ -40,6 +40,7 @@ foam.CLASS({
   extends: 'foam.u2.Controller',
 
   requires: [
+    'com.google.flow.Link',
     'com.google.flow.DAOPrompt',
     'com.google.flow.DocumentReadWriteView',
     'foam.dao.ArrayDAO',
@@ -159,7 +160,10 @@ foam.CLASS({
         start('div', null, this.outputDiv$).addClass(this.myClass('output')).end().
         start('span').
           style({display: 'inline-flex', float: 'left'}).
-        start('b').style({'margin-top': '6px', 'margin-right': '4px', display: 'flex', 'white-space': 'pre'}).call(function() { self.outputLink('help', () => self.eval_('help'), this); }).add(' >').end().
+          start('b').style({'margin-top': '6px', 'margin-right': '4px', display: 'flex', 'white-space': 'pre'}).
+            start(this.Link).add('help').on('click',    () => self.eval_('help'),    this).end().add(', ').
+            start(this.Link).add('history').on('click', () => self.eval_('history'), this).end().add(' >').
+          end().
           start(this.INPUT, null, this.input_$).focus().addClass(this.myClass('input')).end().
         end();
         /* on('click', this.onClick) causes issues with embedded views that need focus */
