@@ -48,7 +48,7 @@ foam.CLASS({
     'foam.nanos.boot.NSpec'
   ],
 
-  imports: [ 'flowDAO', 'nSpecDAO', 'scope' ],
+  imports: [ 'flowDAO', 'nSpecDAO', 'scope', 'window' ],
 
   exports: [ 'eval_', 'modelDAO' ],
 
@@ -99,7 +99,19 @@ foam.CLASS({
     },
     {
       class: 'StringArray',
-      name: 'history_'
+      name: 'history_',
+      factory: function() {
+        try {
+          return JSON.parse(this.window.localStorage[this.historyKey()]);
+        } catch (x) {
+        }
+        return [];
+      }
+    },
+    {
+      class: 'Int',
+      name: 'historyLength',
+      value: 50
     },
     {
       name: 'localScope',
@@ -133,6 +145,10 @@ foam.CLASS({
   ],
 
   methods: [
+    function historyKey() {
+      return this.cls_.id + '_HISTORY';
+    },
+
     function render() {
       this.SUPER();
 
@@ -222,6 +238,13 @@ foam.CLASS({
         this.outputDiv.tag('br');
         this.outputLink(h, () => this.eval_(h));
       });
+    },
+
+    function addHistory(cmd) {
+      if ( cmd.startsWith('history') || cmd.startsWith('help') ) return;
+      this.history_.push(cmd);
+      while ( this.history_.length > this.historyLength ) this.history_.shift();
+      this.window.localStorage[this.historyKey()] = foam.json.stringify(this.history_);
     },
 
     // TODO: Just make be a View class
@@ -316,7 +339,7 @@ foam.CLASS({
       var self = this;
       cmd = cmd.trim();
       if ( ! cmd ) return;
-      if ( cmd != 'history' && cmd != 'history()' && cmd != 'help' ) this.history_.push(cmd);
+      this.addHistory(cmd);
       this.outputDiv.tag('br').start().show(self.showPrompts$).start('b').add('> ').end().add(cmd);
 
       with ( this.scope ) {
