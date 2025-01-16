@@ -76,6 +76,9 @@ foam.CLASS({
     ^ .property-input {
       border: none !important;
     }
+    ^ .foam-u2-view-ValueView {
+      min-width: 220px;
+    }
   `,
 
   properties: [
