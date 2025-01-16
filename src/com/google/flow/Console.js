@@ -249,6 +249,8 @@ foam.CLASS({
 
     function addHistory(cmd) {
       if ( cmd.startsWith('history') || cmd.startsWith('help') ) return;
+      // avoid adjacent duplicates
+      if ( cmd == this.history_[this.history_.length-1] ) return;
       this.history_.push(cmd);
       while ( this.history_.length > this.historyLength ) this.history_.shift();
       this.window.localStorage[this.historyKey()] = foam.json.stringify(this.history_);
