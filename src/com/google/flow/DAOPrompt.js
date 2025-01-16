@@ -6,30 +6,6 @@
 
 foam.CLASS({
   package: 'com.google.flow',
-  name: 'Link',
-  extends: 'foam.u2.View',
-
-  css: `^ {
-    color: -webkit-link;
-    cursor: pointer;
-    text-decoration: underline;
-  }`,
-
-  properties: [
-    [ 'nodeName', 'a' ],
-  ],
-
-  methods: [
-    function render() {
-      this.SUPER();
-      this.addClass();
-    }
-  ]
-});
-
-
-foam.CLASS({
-  package: 'com.google.flow',
   name: 'AbstractDAOAgent',
 
   implements: [
