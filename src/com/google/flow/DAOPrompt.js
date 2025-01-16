@@ -34,7 +34,7 @@ foam.CLASS({
 
   methods: [
     function execute(e) {
-      this.dao.select(this.COUNT()).then(c => {
+      return this.dao.select(this.COUNT()).then(c => {
         e.start('b').add('Count: ').end().add(c.value).br();
       });
     }
@@ -62,7 +62,7 @@ foam.CLASS({
 
   methods: [
     function execute(e) {
-      this.dao.select(foam.u2.mlang.Table.create({}, this)).then(t => {
+      return this.dao.select(foam.u2.mlang.Table.create({}, this)).then(t => {
         e.add(t);
       });
     }
@@ -80,7 +80,7 @@ foam.CLASS({
   methods: [
     function execute(e) {
       var csv = this.CSVSink.create({of: this.of});
-      this.dao.select(csv).then(c => {
+      return this.dao.select(csv).then(c => {
         e.start('pre').add(c.csv);
       });
     }
@@ -95,7 +95,7 @@ foam.CLASS({
 
   methods: [
     function execute(e) {
-      this.dao.select().then(a => {
+      return this.dao.select().then(a => {
         e.start('pre').add(foam.xml.Pretty.stringify(a.array));
       });
     }
@@ -110,7 +110,7 @@ foam.CLASS({
 
   methods: [
     function execute(e) {
-      this.dao.select().then(a => {
+      return this.dao.select().then(a => {
         e.start('pre').add(foam.json.Pretty.stringify(a.array));
       });
     }
@@ -126,7 +126,7 @@ foam.CLASS({
   methods: [
     function execute(e) {
       e = e.startContext({controllerMode: foam.u2.ControllerMode.VIEW});
-      this.dao.select(o => e.add(o));
+      return this.dao.select(o => e.add(o));
     }
   ]
 });
@@ -157,7 +157,7 @@ foam.CLASS({
 
   methods: [
     function execute(e) {
-      this.dao.select(o => e.tag(this.CitationView, {data: o}));
+      return this.dao.select(o => e.tag(this.CitationView, {data: o}));
     }
   ]
 });
@@ -241,6 +241,7 @@ foam.CLASS({
     ^ select[name="selectChoice"] {
       width: 130px;
     }
+    ^ .property-skip { display: inline-flex; }
   `,
 
   constants: {
@@ -295,7 +296,14 @@ foam.CLASS({
     {
       class: 'Int',
       name: 'skip',
-      displayWidth: 5
+      displayWidth: 5,
+      view: function(_, X) {
+        return {
+          class: 'foam.u2.view.DualView',
+          viewa: { class: 'foam.u2.IntView' },
+          viewb: { class: 'foam.u2.RangeView', minValue: 0, maxValue: X.data.rowCount-1, onKey: true }
+        };
+      }
     },
     {
       class: 'Int',
@@ -371,16 +379,19 @@ foam.CLASS({
       view: function(_, X) { return { class: 'foam.u2.view.ChoiceView', choices: X.data.AGENTS }; }
     },
     'content',
-    'count'
+    'rowCount',
+    { class: 'Boolean', name: 'hasRun' }
   ],
 
   // TODO: add describe/help support?
 
   methods: [
-    function render() {
+    async function render() {
       this.SUPER();
 
       this.addClass();
+
+      this.rowCount = (await this.dao.select(this.COUNT())).value;
 
       this.
         start(this.Link).add(this.daoKey$, '.').on('click', this.describe).end().
@@ -394,8 +405,8 @@ foam.CLASS({
       add(this.RUN, ' ', this.CLEAR).br().
       start().
         style({'padding-top': '10px'}).
-        show(this.count$.map(c=>c !== undefined)).
-        add(this.count$, ' selected').
+        // show(this.rowCount$.map(c=>c !== undefined)).
+        add('Count: ', this.rowCount$).
       end().br().
       start('div', {}, this.content$).end().br();
     }
@@ -405,8 +416,10 @@ foam.CLASS({
     {
       name: 'run',
       code: async function() {
-        this.clear();
-        this.count = 0;
+        if ( ! this.hasRun ) {
+          this.hasRun = true;
+          this.skip$.sub(this.onSkip);
+        }
         var dao = this.dao;
         if ( this.whereChoice && typeof this.whereChoice != 'string' ) {
           dao = dao.where(this.whereChoice);
@@ -440,7 +453,10 @@ foam.CLASS({
         }
         var cls   = foam.lookup(this.cls_.package + '.' + this.selectChoice + 'DAOAgent');
         var agent = cls.create({dao: dao});
-        agent.execute(this);
+        var out   = this.start();
+        await agent.execute(out);
+        this.previousOutput?.remove();
+        this.previousOutput = out;
       }
     },
     function clear() {
@@ -449,6 +465,11 @@ foam.CLASS({
   ],
 
   listeners: [
+    {
+      name: 'onSkip',
+      isFramed: true,
+      code: function() { this.run(); }
+    },
     function describe() {
       this.eval_('describe ' + this.dao.of.id);
     }
