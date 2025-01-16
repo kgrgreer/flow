@@ -213,7 +213,7 @@ foam.CLASS({
         }
       }
       // TODO: add ability to specify how SimpleClassView writes links so it can hyperlink back to this command
-      this.outputDiv.tag(foam.doc.SimpleClassView, {data: cls});
+      this.outputDiv.startContext({conventionalUML: true}).tag(foam.doc.SimpleClassView, {data: cls, showUML: true});
       return;
       /*
       this.outputDiv.br().add('CLASS:  ', cls.name, ' extends: ');
