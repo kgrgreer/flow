@@ -16,6 +16,7 @@ foam.CLASS({
     {
       name: 'scope',
       factory: function() {
+        /* ignoreWarning */
         var self  = this;
         var scope = {
           this: self,
