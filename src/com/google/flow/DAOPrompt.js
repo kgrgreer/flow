@@ -150,6 +150,22 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'com.google.flow',
+  name: 'ControllerDAOAgent',
+  extends: 'com.google.flow.AbstractDAOAgent',
+
+  methods: [
+    function execute(e) {
+      return this.dao.select(o => {
+        var data = foam.comics.DAOUpdateController.create({data: o, dao: this.dao}, this);
+        e.tag({class: 'foam.comics.DAOUpdateControllerView', controllerMode: foam.u2.ControllerMode.EDIT, detailView: 'foam.u2.DetailView', dao: this.dao, data: data });
+      });
+    }
+  ]
+});
+
+
+foam.CLASS({
+  package: 'com.google.flow',
   name: 'CitationDAOAgent',
   extends: 'com.google.flow.AbstractDAOAgent',
 
@@ -253,6 +269,7 @@ foam.CLASS({
       [ 'Citation', 'Citation' ],
       [ 'View', 'View' ],
       [ 'Edit', 'Edit' ],
+      [ 'Controller', 'Controller' ],
       [ 'Table', 'Table' ],
       [ 'ScrollTable', 'ScrollTable' ],
       [ 'Cells', 'Cells' ],
