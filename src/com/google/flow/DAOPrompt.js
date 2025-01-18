@@ -156,8 +156,7 @@ foam.CLASS({
   methods: [
     function execute(e) {
       return this.dao.select(o => {
-        var data = foam.comics.DAOUpdateController.create({data: o, dao: this.dao}, this);
-        e.tag({class: 'foam.comics.DAOUpdateControllerView', controllerMode: foam.u2.ControllerMode.EDIT, detailView: 'foam.u2.DetailView', dao: this.dao, data: data });
+        e.tag({class: 'foam.comics.v3.DAOView', data: this.dao});
       });
     }
   ]
