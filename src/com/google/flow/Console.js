@@ -449,8 +449,4 @@ YYYY-MM-DDTHH:MM
 /* TODO:
    modes: Doc, Prompt/Console, Calc
    Input
-   describe: SimpleClassView
-   help MQL
-   help keyboard shortcut
-   scrollbar to skip
 */
