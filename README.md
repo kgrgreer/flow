@@ -29,7 +29,7 @@ Future workspace types could include things like a 3D world, databases, text doc
 FLOW supports conventional Logo-like turtle graphics, but with a few extensions:
 1. Not limited to just line-based graphics, but the turtle can "lay" objects along its path, and those objects can be live, making it more suitable for creating games and animations.
 2. In addition to the regular 2D turtle, there is also a 3D turtle which adds a whole new dimension to turtle graphics. The turtle can also move up and down and pitch and roll to move through 3D space. This makes 3D graphics more accessible as it doesn't require any advanced mathematics.
-3. New turtles can be spawned to demonstrate concurrency. 
+3. New turtles can be spawned to demonstrate concurrency.
 
 # Goals
 1. Create an education environment, primarily aimed at children, for learning programming.
@@ -39,11 +39,40 @@ FLOW supports conventional Logo-like turtle graphics, but with a few extensions:
 FLOW was originally created as an experimental sub-project of the [FOAM2](https://github.com/foam-framework/foam2) framework at Google. This project forked from that original project, but is no longer associated with Google.
 
 # Installation
+## Chromebook
 Install java, nodejs and maven, if required. On Linux, you can do this with:
 
     sudo apt-get install default-jdk
     sudo apt-get install maven
     sudo apt-get install nodejs
+
+## MacOS
+Install Brew (with directions from [https://brew.sh/](https://brew.sh/)):
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo >> /Users/kevingreer/.zprofile
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/kevingreer/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+
+Install the Node Version Manager (NVM):
+
+    brew upgrade
+    brew install nvm
+    echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc
+    echo '[ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh"' >> ~/.zshrc
+    echo '[ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix nvm)/etc/bash_completion.d/nvm"' >> ~/.zshrc
+    source ~/.zshrc
+
+Install NodeJS
+
+    nvm install 22
+
+Install Java
+
+    brew install java
+    echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
+
+## Installing & Running FLOW
 
 To run flow, first clone the FOAM3 repository:
 
@@ -62,7 +91,7 @@ Then start the NANOS server:
 Then point your web browser to:
 
     http://localhost:8080/zac.html
-    
+
 # Source Code
 [https://github.com/kgrgreer/foam3/tree/development/src/com/google/flow](https://github.com/kgrgreer/flow/tree/main/src/com/google/flow)
 
