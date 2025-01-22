@@ -469,7 +469,7 @@ foam.CLASS({
         }
         var cls   = foam.lookup(this.cls_.package + '.' + this.selectChoice + 'DAOAgent');
         var agent = cls.create({dao: dao});
-        var out   = this.start();
+        var out   = this.content.start();
         await agent.execute(out);
         this.previousOutput?.remove();
         this.previousOutput = out;
