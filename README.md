@@ -39,7 +39,7 @@ FLOW supports conventional Logo-like turtle graphics, but with a few extensions:
 FLOW was originally created as an experimental sub-project of the [FOAM2](https://github.com/foam-framework/foam2) framework at Google. This project forked from that original project, but is no longer associated with Google.
 
 # Installation
-## Chromebook
+## Linux / Chromebook
 Install java, nodejs and maven, if required. On Linux, you can do this with:
 
     sudo apt-get install default-jdk
@@ -47,6 +47,8 @@ Install java, nodejs and maven, if required. On Linux, you can do this with:
     sudo apt-get install nodejs
 
 ## MacOS
+Install java, nodejs, brew, nvm and maven, if required.
+
 Install Brew (with directions from [https://brew.sh/](https://brew.sh/)):
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -71,6 +73,10 @@ Install Java
 
     brew install java
     echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
+
+Install Maven
+
+    brew install maven
 
 ## Installing & Running FLOW
 
