@@ -192,8 +192,8 @@ foam.CLASS({
       this.outputDiv.tag(foam.doc.DocBrowser);
     },
 
-    function cells() {
-      this.outputDiv.tag(this.Cells);
+    function cells(rows, cols) {
+      this.outputDiv.tag(this.Cells, rows && cols && { rows: rows, columns: cols});
     },
 
     function doc() {
