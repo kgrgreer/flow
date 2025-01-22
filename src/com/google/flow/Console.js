@@ -421,7 +421,8 @@ YYYY-MM-DDTHH:MM
       }
 
       this.log(r);
-      this.setTimeout(this.scrollToBottom.bind(this), 16);
+      // TODO: this is a bit hackish, do some better way.
+      this.setTimeout(this.scrollToBottom.bind(this), 60);
 
     }
   ],
