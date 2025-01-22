@@ -300,7 +300,8 @@ foam.CLASS({
         [ 'services', 'Display available services', true ],
         [ 'save',     'Save the current flow to a specified name' ]
       ];
-      this.outputDiv.start('table').attr('width', '100%').
+      this.outputDiv.start('h3').add('Commands').end().
+      start('table').attr('width', '100%').
         forEach(cmds, function(c) {
           this.start('tr').
             start('th').attr('align', 'left').call(function() {
@@ -311,7 +312,12 @@ foam.CLASS({
               }
             }).end().
             start('td').attr('align', 'left').add(c[1]);
-        });
+        }).
+        br().
+        start('h3').add('Keyboard Shortcuts').end().
+        start('table').attr('width', '100%').
+          start('tr').start('th').attr('align', 'left').add('ESC').end().start('td').add('Toggle prompt display');
+
     },
 
     async function services(opt_query, opt_nameQuery) {

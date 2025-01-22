@@ -399,8 +399,6 @@ foam.CLASS({
     { class: 'Boolean', name: 'hasRun' }
   ],
 
-  // TODO: add describe/help support?
-
   methods: [
     async function render() {
       this.SUPER();
