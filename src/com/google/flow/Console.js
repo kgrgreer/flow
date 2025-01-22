@@ -49,7 +49,7 @@ foam.CLASS({
     'foam.nanos.boot.NSpec'
   ],
 
-  imports: [ 'flowDAO', 'nSpecDAO', 'scope', 'window' ],
+  imports: [ 'flowDAO', 'nSpecDAO', 'scope', 'window', 'setTimeout' ],
 
   exports: [ 'eval_', 'modelDAO' ],
 
@@ -179,6 +179,10 @@ foam.CLASS({
       if ( args.length == 0 ) return;
       this.outputDiv.tag('br');
       this.outputDiv.add(args.join(' '));
+      this.scrollToBottom();
+    },
+
+    function scrollToBottom() {
       this.element_.scrollTop = this.element_.scrollHeight;
     },
 
@@ -382,7 +386,7 @@ YYYY-MM-DDTHH:MM
               self.outputLink(of.id, () => self.eval_('describe(' + of.id + ')'), this);
             }).end().
             start('td').attr('align', 'left').add(n.description);
-        });;
+        });
     },
 
     // TODO: better to add newlines after
@@ -417,6 +421,8 @@ YYYY-MM-DDTHH:MM
       }
 
       this.log(r);
+      this.setTimeout(this.scrollToBottom.bind(this), 16);
+
     }
   ],
 
