@@ -3,7 +3,6 @@
 Features
 * [] Top-Level FLOW DAO & Controller with NANOS Integration
 * [] Triangle and/or Polygon Shape
-  [] Make "Console" into an object?
   [] Make "language" features into object or add to shell?
   [] Add Sections to DetailView
   [] Add Actions to DetailView
@@ -29,7 +28,6 @@ Features
   Make custom Halos creatable in FLOW
   Specify Musical Notes for Beep
   Musical Instrument
-  Console / Terminal
   Timeline / Sequence / Animation
   Dashboard
   Borders? (unnamed parents?)

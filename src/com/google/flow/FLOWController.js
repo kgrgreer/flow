@@ -17,7 +17,6 @@ foam.CLASS({
   requires: [
     'com.google.flow.Calc',
     'com.google.flow.Canvas',
-    'com.google.flow.Console',
     'com.google.flow.Circle',
     'com.google.flow.DetailPropertyView',
     'com.google.flow.Ellipse',
@@ -33,6 +32,7 @@ foam.CLASS({
     'foam.google.flow.TreeView',
     'foam.graphics.Box',
     'foam.graphics.CView',
+    'foam.nanos.console.Console',
     'foam.physics.Physical',
     'foam.physics.PhysicsEngine',
     'foam.u2.PopupView',
@@ -68,7 +68,7 @@ foam.CLASS({
         -ms-user-select: none;
         user-select: none;
         color: #444;
-        }
+      }
 
       ^ .foam-u2-Tabs-tabRow { display: flex; }
       ^ { display: flex; }
