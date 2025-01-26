@@ -32,3 +32,22 @@ p({
   "documentation": "A DAO which contains information about Olympic medal results.",
   "authNotes": "The \"authenticate\" flag is explicitly set to false because we want to be able to use the medalDAO for demo purposes. The DAO is decorated with an AuthenticatedDAO decorator with \"authorizeOnRead\" set to false so that anyone can read from medalDAO but only those with permission can write to or remove from it."
 })
+
+p({
+  "class": "foam.nanos.boot.NSpec",
+  "name": "cachedMedalDAO",
+  "description": "A client cached copy of medalDAO.",
+  "serve": true,
+  "authenticate": false,
+  "serviceScript": """
+    return x.get("medalDAO");
+  """,
+  "client": """
+    {
+      "of": "foam.demos.olympics.Medal",
+      "cache": true,
+      "ttlSelectPurgeTime": 0,
+      "ttlPurgeTime": 0
+    }
+  """
+})
