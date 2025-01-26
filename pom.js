@@ -40,6 +40,9 @@ foam.POM({
     { name: 'foam3/src/foam/demos/robot/Robot',     flags: 'js' },
     { name: 'foam3/src/foam/demos/sevenguis/Cells', flags: 'js' },
     { name: 'foam3/src/foam/nanos/zac/Client',      flags: 'js' },
-    { name: 'foam3/src/foam/demos/olympics/Medal',  flags: 'js|java' }
+    { name: 'foam3/src/foam/demos/olympics/Medal',  flags: 'js|java' },
+    { name: 'foam3/src/foam/u2/mlang/Pie',          flags: 'js|java' },
+    { name: 'foam3/src/foam/graphics/DataSource',   flags: 'js' },
+    { name: 'foam3/src/foam/graphics/PieGraph',     flags: 'js' }
   ]
 });
