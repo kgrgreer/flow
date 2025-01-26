@@ -6,3 +6,29 @@ p({
     "welcomeFiles":["/zac.html"]
   }
 })
+
+p({
+  "class": "foam.nanos.boot.NSpec",
+  "name": "medalDAO",
+  "description": "A demo DAO of Olympic medal data.",
+  "serve": true,
+  "authenticate": false,
+  "serviceScript": """
+    return new foam.dao.EasyDAO.Builder(x)
+      .setPm(true)
+      .setAuthorize(false)
+//      .setAuthorizer(new foam.nanos.auth.GlobalReadAuthorizer("medal"))
+      .setJournalType(foam.dao.JournalType.SINGLE_JOURNAL)
+      .setJournalName(\"medals\")
+      .setOf(foam.demos.olympics.Medal.getOwnClassInfo())
+//      .setOrder(new foam.core.PropertyInfo[] {foam.nanos.auth.Region.NAME})
+      .build();
+//      .addPropertyIndex(new foam.core.PropertyInfo[] { foam.nanos.auth.Region.NAME })
+//      .addPropertyIndex(new foam.core.PropertyInfo[] { foam.nanos.auth.Region.COUNTRY_ID })
+//      .addPropertyIndex(new foam.core.PropertyInfo[] { foam.nanos.auth.Region.ISO_CODE })
+//      .addPropertyIndex(new foam.core.PropertyInfo[] { foam.nanos.auth.Region.ALTERNATIVE_NAMES });
+  """,
+  "client": "{\"of\":\"foam.demos.olympics.Medal\"}",
+  "documentation": "A DAO which contains information about Olympic medal results.",
+  "authNotes": "The \"authenticate\" flag is explicitly set to false because we want to be able to use the medalDAO for demo purposes. The DAO is decorated with an AuthenticatedDAO decorator with \"authorizeOnRead\" set to false so that anyone can read from medalDAO but only those with permission can write to or remove from it."
+})
