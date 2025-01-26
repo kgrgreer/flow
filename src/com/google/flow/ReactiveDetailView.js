@@ -16,6 +16,7 @@ foam.CLASS({
   properties: [
     {
       name: 'reactions_',
+      searchable: false,
       hidden: true,
       shortName: 'r_',
       factory: function() { return {}; },
