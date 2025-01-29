@@ -1,12 +1,12 @@
 <html>
-  <head>
+ <head>
+    <script language="javascript" src="foam3/src/foam.js" project="/pom"></script>
+    <title>ZAC Flow</title>
     <style>
       * { font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
     </style>
-    <script language="javascript" src="foam3/src/foam.js" project="/pom"></script>
-    <title>FLOW</title>
-  </head>
-  <body>
-    <foam id="flow" class="com.google.flow.FLOWController"></foam>
-  </body>
+ </head>
+ <body>
+  <foam id="ctrl" class="foam.nanos.zac.Client" bootservices="zacClient"></foam>
+ </body>
 </html>
