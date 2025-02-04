@@ -51,3 +51,20 @@ p({
     }
   """
 })
+
+p({
+  "class": "foam.nanos.boot.NSpec",
+  "name": "clientMedalDAO",
+  "description": "A client-only Medal DAO.",
+  "authenticate": false,
+  "lazyClient": true,
+  "serve": true,
+  "client":"""{
+    "class": "foam.dao.EasyDAO",
+    "of": "foam.demos.olympics.Medal",
+    "daoType": "IDB",
+    "cache": true,
+    "ttlSelectPurgeTime": 0,
+    "ttlPurgeTime": 0
+  }"""
+})
