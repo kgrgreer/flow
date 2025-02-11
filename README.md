@@ -89,7 +89,7 @@ Create the necessary opt directory:
     sudo mkdir /opt/flow
     sudo chmod 777 /opt/flow/
 
-Then start the NANOS server:
+Then start the CORE server:
 
     $ cd flow
     $ ./build.sh

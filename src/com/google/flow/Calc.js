@@ -143,18 +143,18 @@ foam.CLASS({
         row: function(c) { return parseInt(c); },
         number: function(s) {
           var f = parseFloat(s);
-          return foam.core.ConstantSlot.create({value: f});
+          return foam.lang.ConstantSlot.create({value: f});
         },
         fun: function(a) {
           var c = cell(a[0]);
-          return foam.core.ConstantSlot.create({value: c.value()});
+          return foam.lang.ConstantSlot.create({value: c.value()});
         },
         cell: function(a) {
           var c = cell(a);
           return c.numValue$;
         },
         vargs: function(a) {
-          return foam.core.ExpressionSlot.create({
+          return foam.lang.ExpressionSlot.create({
             code: function() {
               var ret = [];
               for ( var i = 0 ; i < a.length ; i++ ) {
@@ -177,7 +177,7 @@ foam.CLASS({
             for ( var r = r1 ; r <= r2 ; r++ )
               slots.push(cell(c + r).numValue$);
 
-          return foam.core.ExpressionSlot.create({
+          return foam.lang.ExpressionSlot.create({
             code: function() {
               return arguments;
             },
@@ -185,7 +185,7 @@ foam.CLASS({
           });
         },
         string: function(s) {
-          return foam.core.ConstantSlot.create({value: s});
+          return foam.lang.ConstantSlot.create({value: s});
         }
       });
     }

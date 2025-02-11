@@ -1,14 +1,14 @@
 p({
-  "class":"foam.nanos.boot.NSpec",
+  "class":"foam.core.boot.CSpec",
   "name":"http",
   "service":{
-    "class":"foam.nanos.jetty.HttpServer",
+    "class":"foam.core.jetty.HttpServer",
     "welcomeFiles":["/zac.html"]
   }
 })
 
 p({
-  "class": "foam.nanos.boot.NSpec",
+  "class": "foam.core.boot.CSpec",
   "name": "medalDAO",
   "description": "A demo DAO of Olympic medal data.",
   "serve": true,
@@ -17,16 +17,16 @@ p({
     return new foam.dao.EasyDAO.Builder(x)
       .setPm(true)
       .setAuthorize(false)
-//      .setAuthorizer(new foam.nanos.auth.GlobalReadAuthorizer("medal"))
+//      .setAuthorizer(new foam.core.auth.GlobalReadAuthorizer("medal"))
       .setJournalType(foam.dao.JournalType.SINGLE_JOURNAL)
       .setJournalName(\"medals\")
       .setOf(foam.demos.olympics.Medal.getOwnClassInfo())
-//      .setOrder(new foam.core.PropertyInfo[] {foam.nanos.auth.Region.NAME})
+//      .setOrder(new foam.lang.PropertyInfo[] {foam.core.auth.Region.NAME})
       .build();
-//      .addPropertyIndex(new foam.core.PropertyInfo[] { foam.nanos.auth.Region.NAME })
-//      .addPropertyIndex(new foam.core.PropertyInfo[] { foam.nanos.auth.Region.COUNTRY_ID })
-//      .addPropertyIndex(new foam.core.PropertyInfo[] { foam.nanos.auth.Region.ISO_CODE })
-//      .addPropertyIndex(new foam.core.PropertyInfo[] { foam.nanos.auth.Region.ALTERNATIVE_NAMES });
+//      .addPropertyIndex(new foam.lang.PropertyInfo[] { foam.core.auth.Region.NAME })
+//      .addPropertyIndex(new foam.lang.PropertyInfo[] { foam.core.auth.Region.COUNTRY_ID })
+//      .addPropertyIndex(new foam.lang.PropertyInfo[] { foam.core.auth.Region.ISO_CODE })
+//      .addPropertyIndex(new foam.lang.PropertyInfo[] { foam.core.auth.Region.ALTERNATIVE_NAMES });
   """,
   "client": "{\"of\":\"foam.demos.olympics.Medal\"}",
   "documentation": "A DAO which contains information about Olympic medal results.",
@@ -34,7 +34,7 @@ p({
 })
 
 p({
-  "class": "foam.nanos.boot.NSpec",
+  "class": "foam.core.boot.CSpec",
   "name": "cachedMedalDAO",
   "description": "A client cached copy of medalDAO.",
   "serve": true,
@@ -53,7 +53,7 @@ p({
 })
 
 p({
-  "class": "foam.nanos.boot.NSpec",
+  "class": "foam.core.boot.CSpec",
   "name": "clientMedalDAO",
   "description": "A client-only Medal DAO.",
   "authenticate": false,

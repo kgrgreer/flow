@@ -1,7 +1,7 @@
 * = Needed for MVP
 
 Features
-* [] Top-Level FLOW DAO & Controller with NANOS Integration
+* [] Top-Level FLOW DAO & Controller with CORE Integration
 * [] Triangle and/or Polygon Shape
   [] Make "language" features into object or add to shell?
   [] Add Sections to DetailView

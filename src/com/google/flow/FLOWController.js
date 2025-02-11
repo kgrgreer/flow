@@ -32,7 +32,7 @@ foam.CLASS({
     'foam.google.flow.TreeView',
     'foam.graphics.Box',
     'foam.graphics.CView',
-    'foam.nanos.console.Console',
+    'foam.core.console.Console',
     'foam.physics.Physical',
     'foam.physics.PhysicsEngine',
     'foam.u2.PopupView',
@@ -143,11 +143,11 @@ foam.CLASS({
       name: 'tools',
       view: {
         class: 'foam.u2.TableView',
-        columns: [ foam.core.Model.NAME ]
+        columns: [ foam.lang.Model.NAME ]
       },
       factory: function() {
         var dao = this.EasyDAO.create({
-          of: 'foam.core.Model',
+          of: 'foam.lang.Model',
           daoType: 'ARRAY'
         });
         dao.put(com.google.flow.Select.model_);
@@ -177,7 +177,7 @@ foam.CLASS({
         dao.put(com.google.flow.Revolver.model_);
         dao.put(com.google.flow.Button.model_);
         dao.put(foam.input.Gamepad.model_);
-        dao.put(foam.core.Model.model_);
+        dao.put(foam.lang.Model.model_);
         // dao.put(com.google.dxf.ui.DXFDiagram.model_);
         return dao;
       }
@@ -295,7 +295,7 @@ foam.CLASS({
     {
       name: 'sheet',
       factory: function() {
-        this.Cells.getAxiomsByClass(foam.core.Property).forEach(function(p) { p.hidden = true; });
+        this.Cells.getAxiomsByClass(foam.lang.Property).forEach(function(p) { p.hidden = true; });
         this.Cells.ROWS.hidden = this.Cells.COLUMNS.hidden = false;
 
         return this.Cells.create({rows: 28, columns:8}).style({width:'650px'});
@@ -304,7 +304,7 @@ foam.CLASS({
     {
       name: 'calc',
       factory: function() {
-        this.Calc.getAxiomsByClass(foam.core.Property).forEach(function(p) { p.hidden = true; });
+        this.Calc.getAxiomsByClass(foam.lang.Property).forEach(function(p) { p.hidden = true; });
 
         return this.Calc.create().style({width:'650px'});
       }

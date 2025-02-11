@@ -27,7 +27,7 @@ foam.CLASS({
       this.SUPER();
 
       try {
-        if ( foam.nanos.zac.Client.isInstance(this.ctrl) ) {
+        if ( foam.core.zac.Client.isInstance(this.ctrl) ) {
           this.ctrl.add(this.FLOWController.create({}, this));
           // this.ctrl.add(this);
         }

@@ -1,5 +1,5 @@
 p({
-  "class": "foam.nanos.boot.NSpec",
+  "class": "foam.core.boot.CSpec",
   "name": "zacClient",
   "authenticate": false,
   "lazyClient": true,
@@ -8,7 +8,7 @@ p({
 })
 
 p({
-  "class": "foam.nanos.boot.NSpec",
+  "class": "foam.core.boot.CSpec",
   "name": "scope",
   "authenticate": false,
   "lazyClient": true,
