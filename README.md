@@ -111,3 +111,5 @@ Then point your web browser to:
 [Squeak Smalltalk](https://squeak.org/)
 
 [Recursive Drawing](http://recursivedrawing.com/)
+
+[Inkbase](https://www.inkandswitch.com/inkbase/)
